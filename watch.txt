@@ -1,0 +1,1 @@
+paper:psd/paper.psd:png/paper.png
