@@ -91,10 +91,10 @@ class Renderer {
             ,res: Platform.createBitmap(ROOM_SIZE * room.state.width, ROOM_SIZE * room.state.height, 0)
           };
       }
-      var vi = 0;
+      var vi = -1;
       var str:Array<Array<String>> = [ for (y in 0...room.state.height * 2)
-          [ for (x in 0...room.state.width * 2) switch (room.state.walls[vi++]) {
-              case Solid: x % 2 == 0 ? "#" : Text.t(Mono3) + "#" + Text.tr;
+          [ for (x in 0...room.state.width * 2) switch (room.state.walls[++vi]) {
+              case Solid: Text.tp(room.state.pov[vi]) + "#" + Text.tr;
               case _: " ";
             } ]
         ];

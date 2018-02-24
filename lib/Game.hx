@@ -20,12 +20,17 @@ class Game extends JamState {
     ren.mouseMove(state, mx, my);
   }
   
+  override public function mouseClick(mx, my) {
+    ren.mouseMove(state, mx, my);
+    state.vision();
+  }
+  
   override public function keyUp(key:Key) {
     switch (key) {
-      case ArrowRight: state.player.x++;
-      case ArrowLeft: state.player.x--;
-      case ArrowDown: state.player.y++;
-      case ArrowUp: state.player.y--;
+      case ArrowRight | KeyD: state.player.x++;
+      case ArrowLeft  | KeyA: state.player.x--;
+      case ArrowDown  | KeyS: state.player.y++;
+      case ArrowUp    | KeyW: state.player.y--;
       case _:
     }
   }

@@ -16,6 +16,10 @@ class Text {
       ];
   }
   
+  public static inline function tp(pov:Int):String {
+    return t(FontType.Mono5 - ((pov / 20).floor().minI(4)));
+  }
+  
   public static inline function t(ft:FontType):String {
     return "$" + String.fromCharCode("A".code + ft);
   }
