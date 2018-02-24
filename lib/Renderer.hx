@@ -155,6 +155,11 @@ class Renderer {
       for (v in room.state.visuals) switch (v) {
         case Justify(txt, x, y, w):
         rb.blitAlpha(Text.justify(txt, w).res, x, y);
+        case Photo(id, x, y, w, h):
+        var p = Main.g.amB('paper-${id}');
+        rb.blitAlphaRect(p, x, y, (p.width - w) >> 1, (p.height - h) >> 1, w, h);
+        case Bitmap(b, x, y):
+        rb.blitAlpha(b, x, y);
       }
       cacheBg[room.state.id] = rb;
     }

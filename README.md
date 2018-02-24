@@ -64,9 +64,11 @@ ROGUELIKE
      - [ ] folds
      - [ ] scratch-off surfaces
      - [ ] font aligned on paper
-     - [ ] text entities
-       - [ ] player
-     - [.] animate dis/appearance
+     - [x] text entities
+       - [x] player
+       - [x] single-letter enemy
+       - [ ] ?
+     - [x] animate dis/appearance
        - [ ] shadow
    - [x] piece of tape for corridors
  - gameplay
@@ -80,7 +82,7 @@ ROGUELIKE
      - [x] connect with tapes
    - [ ] story generation
      - [x] suspicious story
-     - [ ] newspaper clippings with text
+     - [x] newspaper clippings with text
      - [x] text justify
      - [ ] mark words - words become enemies / censored
    - [ ] controls
@@ -98,6 +100,9 @@ ROGUELIKE
 ### Ideas dump ###
 
  - where's the truth @ ? (intro screen)
+   - walk into box to complete wasd tutorial
+   - options
+   - start game
 
 ### Generating story ###
 

@@ -44,6 +44,7 @@ class Text {
     var lineWords = [];
     var lineWidth = 0;
     var minSpace = width * 0.1;
+    var maxSpacing = 20.0;
     while (words.length > 0) {
       var curWord = words.shift();
       if (width - (curWord.width + lineWidth) >= minSpace) {
@@ -56,10 +57,14 @@ class Text {
         lineWidth = curWord.width;
       }
     }
-    var res = Platform.createBitmap(width, lines.length * 15, 0);
+    if (lineWords.length > 0) {
+      lines.push(lineWords);
+      lineWidths.push(lineWidth);
+    }
+    var res = Platform.createBitmap(width, lines.length.maxI(1) * 15, 0);
     var cy = 0;
     for (l in lines) {
-      var spacing = (width - lineWidths.shift()) / l.length;
+      var spacing = ((width - lineWidths.shift()) / (l.length - 1)).minF(maxSpacing);
       var cx = 0.0;
       for (w in l) {
         fonts[0].render(res, cx.floor(), cy, w.txt, fonts);

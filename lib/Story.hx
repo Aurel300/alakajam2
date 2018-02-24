@@ -81,6 +81,7 @@ class Story {
     }, {
        id: "ufo-autopsy"
       ,display: "%agent% ~(agent/has/have) a recording of autopsy on %alien% at %site%"
+      ,photo: "alien"
       ,agents: ["agent" => "people", "alien" => "alien"]
       ,places: ["site" => "autopsy"]
       ,after: ["ufo-close-contact"]
@@ -110,9 +111,17 @@ class Story {
   
   public function new() {}
   
+  public function excerpt():{txt:String, photo:String} {
+    var root = FM.prng.nextElement(plotpoints);
+    var pp = [root];
+    if (FM.prng.nextMod(3) == 0 && root.after.length > 0) pp.unshift(FM.prng.nextElement(root.after));
+    if (FM.prng.nextMod(3) == 0 && root.before.length > 0) pp.push(FM.prng.nextElement(root.before));
+    return {txt: describe(pp, FM.prng.nextMod(2), Normal), photo: root.event.photo};
+  }
+  
   public function describe(
     plotpoints:Array<PlotPoint>, formal:Int, mode:DescribeMode
-  ):Void {
+  ):String {
     var pi = -1;
     var text = [ for (p in plotpoints) {
         pi++;
@@ -150,7 +159,7 @@ class Story {
       if (FM.prng.nextBool())
         text.insert(FM.prng.nextMod(text.length), FM.prng.nextElement(FILLER));
     }
-    trace(text.join(" "));
+    return text.join(" ");
   }
   
   public function describePlotPoint(
