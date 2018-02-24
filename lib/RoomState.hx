@@ -23,6 +23,7 @@ class RoomState {
   public var boundary:Vector<Point2DI>;
   public var tapes:Array<Tape> = [];
   public var portals:Array<Portal> = [];
+  public var visuals:Array<RoomVisual> = [];
   
   public function new(type:RoomType, width:Int, height:Int) {
     this.type = type;
@@ -36,7 +37,7 @@ class RoomState {
     mask = Vector.fromArrayCopy([ for (i in 0...wh) 1 ].map(n -> n > 0));
     walls = Vector.fromArrayCopy([ for (y in 0...h2) for (x in 0...w2)
         //x == 0 || x == w2 - 1 || y == 0 || y == height * 2 - 1 || FM.prng.nextBool() ? WallType.None : WallType.Solid
-        x == 1 || x == w2 - 2 || y == 1 || y == h2 - 2 ? WallType.Solid : WallType.None
+        x == 1 || x == w2 - 2 || y == 1 || y == h2 - 2 ? WallType.Invisible : WallType.None
       ]);
     pov = Vector.fromArrayCopy([ for (i in 0...wh4) -1 ]);
     boundary = new Vector<Point2DI>(w2 + h2 - 4);

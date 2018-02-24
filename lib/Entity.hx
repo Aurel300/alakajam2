@@ -43,8 +43,8 @@ class Entity {
       }
     }
     switch (room.walls[room.indexTile(nx, ny)]) {
-      case Solid: return false;
-      case _:
+      case None:
+      case _: return false;
     }
     for (e in room.entities) {
       if (e == this) continue;

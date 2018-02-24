@@ -81,7 +81,7 @@ ROGUELIKE
    - [ ] story generation
      - [x] suspicious story
      - [ ] newspaper clippings with text
-     - [ ] text justify
+     - [x] text justify
      - [ ] mark words - words become enemies / censored
    - [ ] controls
      - [x] moving around

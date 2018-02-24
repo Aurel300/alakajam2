@@ -152,6 +152,10 @@ class Renderer {
       }
       //rb.blitAlpha(Main.g.amB("paper-sub"), 9, 9);
       if (room.state.title != null) Text.render(rb, 9, 9, room.state.title);
+      for (v in room.state.visuals) switch (v) {
+        case Justify(txt, x, y, w):
+        rb.blitAlpha(Text.justify(txt, w).res, x, y);
+      }
       cacheBg[room.state.id] = rb;
     }
     {
