@@ -75,10 +75,13 @@ ROGUELIKE
      - [x] find a path in macro-grid with randomised dfs
      - [x] place plot-rooms regularly
      - [x] place fillers
-     - [ ] compress and shift
+     - [x] compress
+     - [ ] shift
+     - [x] connect with tapes
    - [ ] story generation
      - [x] suspicious story
      - [ ] newspaper clippings with text
+     - [ ] text justify
      - [ ] mark words - words become enemies / censored
    - [ ] controls
      - [.] moving around

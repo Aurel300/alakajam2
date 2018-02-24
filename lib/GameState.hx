@@ -23,7 +23,7 @@ class GameState {
     for (i in 0...5) {
       layout.rooms[0].state.entities.push(new Enemy());
     }
-    for (e in layout.rooms[0].state.entities) e.room = layout.rooms[0].state;
+    for (r in layout.rooms) for (e in r.state.entities) e.room = r.state;
   }
   
   public function tick() {
