@@ -1,20 +1,23 @@
 package lib;
 
 class Player extends Entity {
+  var cdWalk:Int = 0;
+  
   public function new() {
-    super(Player);
-    x = y = 1;
+    super(Player, Always);
+    x = y = 2;
   }
   
-  override public function print(str:Array<Array<String>>):Void {
-    str[y][x] = Text.t(Mono1) + "@" + Text.tr;
+  override public function tick(state:GameState):Void {
+    if (cdWalk == 0) {
+      if (walkOrtho(
+           (1).negposI(state.keys.left, state.keys.right)
+          ,(1).negposI(state.keys.up, state.keys.down)
+        )) cdWalk = state.rpg.speed;
+    } else cdWalk--;
   }
   
-  /*
-  override public function render(ab:Bitmap, ox:Int, oy:Int):Void {
-    Text.render(
-        ab, ox + x * Renderer.TILE_SIZE - 1, oy + y * Renderer.TILE_SIZE - 4, "@"
-      );
+  override public function print(str:Array<Array<String>>, pov:Int):Void {
+    put(str, x, y, Text.t(Mono1) + "@");
   }
-  */
 }

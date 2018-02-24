@@ -70,16 +70,34 @@ ROGUELIKE
    - [ ] room generation
    - [ ] story generation
    - [ ] controls
-     - [ ] moving around
+     - [.] moving around
+       - [x] speed limit
+       - [x] collision
+       - [ ] other rooms
      - [ ] shooting?
-     - [ ] turns
-     - [ ] vision cone
-     - [ ] left click to see
+     - [x] vision cone
+     - [x] left click to see
      - [ ] right click to shoot
        - [ ] bresenham shooting
-   - [ ] RPG elements?
+   - [ ] RPG elements
+     - [ ] character sheet
  - audio
    - not my problem :D
+
+### Ideas dump ###
+
+ - photos / newspaper cuttings
+ - where's the truth @ ? (intro screen)
+
+### Photos ###
+
+https://grist.files.wordpress.com/2011/06/offshore-oil-drilling-rig1.jpg
+https://pixabay.com/en/bunker-fortification-fort-the-war-393533/
+http://www.larrygscale.com/Toxic-Waste-50-Gallon-Drum-Miniature-124-Scale-G-Scale_p_298.html
+http://www.hidden-truth.org/4/1947-roswell-ufo-crash.html
+http://www.dailytelegraph.com.au/news/weird/roswell-aliens-true/story-e6frev20-1111113867042
+https://upload.wikimedia.org/wikipedia/commons/d/de/Victor_III_class_submarine.jpg
+http://www.arizonaskiesmeteorites.com/WWII-Military-Collectibles/Mosquito.jpg
 
 ### "POC" ###
 

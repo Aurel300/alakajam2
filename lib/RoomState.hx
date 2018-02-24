@@ -34,7 +34,7 @@ class RoomState {
         //x == 0 || x == w2 - 1 || y == 0 || y == height * 2 - 1 || FM.prng.nextBool() ? WallType.None : WallType.Solid
         x == 1 || x == w2 - 2 || y == 1 || y == h2 - 2 ? WallType.Solid : WallType.None
       ]);
-    pov = Vector.fromArrayCopy([ for (i in 0...wh4) 0 ]);
+    pov = Vector.fromArrayCopy([ for (i in 0...wh4) -1 ]);
     boundary = new Vector<Point2DI>(w2 + h2 - 4);
     var bvi = 0;
     for (x in 0...w2) {
@@ -47,27 +47,36 @@ class RoomState {
     }
   }
   
-  public function tick() {
-    for (e in entities) e.tick();
+  public function tick(state:GameState) {
+    for (e in entities) e.tick(state);
     for (i in 0...wh4) if (pov[i] > 0) pov[i]--;
+  }
+  
+  public function revealRect(x1:Int, y1:Int, x2:Int, y2:Int):Void {
+    x1 = x1.maxI(0);
+    y1 = y1.maxI(0);
+    x2 = x2.minI(w2 - 1);
+    y2 = y2.minI(h2 - 1);
+    for (y in y1...y2 + 1) for (x in x1...x2 + 1) {
+      pov[indexTile(x, y)] = POV_STRENGTH;
+    }
+  }
+  
+  public inline function indexTile(x:Int, y:Int):Int {
+    return x + y * w2;
   }
   
   public function vision(px:Int, py:Int, mx:Int, my:Int) {
     var from = new Point2DI(px, py);
-    //var fromF = new Point2DF(px, py);
     var angle = Math.atan2(my - py * 8 + 4, mx - px * 8 + 4);
-    trace(angle);
-    var c1 = new Point2DF(Math.cos(angle - Math.PI / 4), Math.sin(angle - Math.PI / 4));
-    var c2 = new Point2DF(Math.cos(angle + Math.PI / 4), Math.sin(angle + Math.PI / 4));
+    var c1 = new Point2DF(Math.cos(angle + Math.PI / 4), Math.sin(angle + Math.PI / 4));
+    var c2 = c1.normalC();
     for (ray in boundary) {
       var power = 1.0;
       var rp = new Point2DF(ray.x - px, ray.y - py);
-      var dp1 = rp.dot(c1);
-      var dp2 = rp.dot(c2);
-      trace(dp1, dp2);
-      if (dp1 < 0 || dp2 < 0) continue;
+      if (rp.dot(c1) < 0 || rp.dot(c2) < 0) continue;
       for (pt in new Bresenham(from, ray)) {
-        var mi = pt.y * w2 + pt.x;
+        var mi = indexTile(pt.x, pt.y);
         pov[mi] += (power * POV_STRENGTH).floor();
         switch (walls[mi]) {
           case Solid: power -= 1;

@@ -94,12 +94,19 @@ class Renderer {
       var vi = -1;
       var str:Array<Array<String>> = [ for (y in 0...room.state.height * 2)
           [ for (x in 0...room.state.width * 2) switch (room.state.walls[++vi]) {
+              case _ if (room.state.pov[vi] == -1): " ";
               case Solid: Text.tp(room.state.pov[vi]) + "#" + Text.tr;
               case _: " ";
             } ]
         ];
       for (e in room.state.entities) {
-        e.print(str);
+        var mi = room.state.indexTile(e.x, e.y);
+        if (switch (e.povType) {
+            case Always: true;
+            case Fade if (room.state.pov[mi] >= 0): true;
+            case Hide if (room.state.pov[mi] > 0): true;
+            case _: false;
+          }) e.print(str, room.state.pov[mi]);
       }
       var txt = str.map(l -> l.join(""));
       var mod = false;

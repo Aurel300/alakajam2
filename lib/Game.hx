@@ -12,6 +12,12 @@ class Game extends JamState {
   }
   
   override public function tick() {
+    state.keys = {
+         left:  ak(ArrowLeft)  || ak(KeyA)
+        ,up:    ak(ArrowUp)    || ak(KeyW)
+        ,right: ak(ArrowRight) || ak(KeyD)
+        ,down:  ak(ArrowDown)  || ak(KeyS)
+      };
     state.tick();
     ren.render(state, ab);
   }
@@ -23,15 +29,5 @@ class Game extends JamState {
   override public function mouseClick(mx, my) {
     ren.mouseMove(state, mx, my);
     state.vision();
-  }
-  
-  override public function keyUp(key:Key) {
-    switch (key) {
-      case ArrowRight | KeyD: state.player.x++;
-      case ArrowLeft  | KeyA: state.player.x--;
-      case ArrowDown  | KeyS: state.player.y++;
-      case ArrowUp    | KeyW: state.player.y--;
-      case _:
-    }
   }
 }
