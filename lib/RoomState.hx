@@ -20,11 +20,13 @@ class RoomState {
   public var type:RoomType;
   public var title:String;
   public var boundary:Vector<Point2DI>;
+  public var tapes:Array<Tape> = [];
   
-  public function new() {
+  public function new(type:RoomType, width:Int, height:Int) {
+    this.type = type;
     id = ROOM_ID++;
-    width = 30;
-    height = 15;
+    this.width = width;
+    this.height = height;
     wh = width * height;
     w2 = width * 2;
     h2 = height * 2;

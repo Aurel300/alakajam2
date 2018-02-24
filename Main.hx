@@ -11,6 +11,11 @@ using sk.thenet.FM;
 using sk.thenet.stream.Stream;
 
 class Main extends Application {
+  public static inline var W:Int = 400;
+  public static inline var H:Int = 300;
+  public static inline var WH:Int = W >> 1;
+  public static inline var HH:Int = H >> 1;
+  
   public static var g:Game;
   
   public function new() {

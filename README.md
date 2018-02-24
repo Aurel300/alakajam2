@@ -55,6 +55,7 @@ ROGUELIKE
 ### TODO ###
 
  - graphics
+   - [x] desk
    - [ ] paper routines
      - [x] paper of arbitrary size
      - [x] cut outs
@@ -70,7 +71,15 @@ ROGUELIKE
    - [ ] piece of tape for corridors
  - gameplay
    - [ ] room generation
+     - [x] generate macro-grid
+     - [x] find a path in macro-grid with randomised dfs
+     - [x] place plot-rooms regularly
+     - [x] place fillers
+     - [ ] compress and shift
    - [ ] story generation
+     - [x] suspicious story
+     - [ ] newspaper clippings with text
+     - [ ] mark words - words become enemies / censored
    - [ ] controls
      - [.] moving around
        - [x] speed limit
@@ -89,6 +98,21 @@ ROGUELIKE
 ### Ideas dump ###
 
  - where's the truth @ ? (intro screen)
+
+### Generating story ###
+
+ - [ ] purposefully vague sentences
+   - "The (agent) wants us to believe that (statement), but then why (contradiction.consequence)?"
+   - agents
+     - government, president, agency, media
+   - statement
+     - (event) happened
+     - (event) happened at (place)
+     - (event) happened at (datetime)
+   - contradictions
+     - (event) did not happen
+     - (event) happened at (elsewhere)
+     - (event) happened at (different datetime)
 
 ### Photos ###
 
@@ -121,5 +145,27 @@ http://www.arizonaskiesmeteorites.com/WWII-Military-Collectibles/Mosquito.jpg
                                                   x
                                                   x
                                                   x
+                                                  x
+                                                  x
+
+
+                                                  x
+                                                  x
+     #############                                x
+     #############                                x
+     #############                                x
+     #############      #############             x
+     #############      #############             x
+     #############      #############             x
+     #############      #############             x
+                        #############             x
+            #########   #############             x
+            #########   #############             x
+            #########                             x
+            #########                             x
+            #########                             x
+                              ##########          x
+                              ##########          x
+                              ##########          x
                                                   x
                                                   x
