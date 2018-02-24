@@ -79,6 +79,7 @@ class Renderer {
         rb.blitAlpha(roomPieces[rp], x * ROOM_SIZE, y * ROOM_SIZE);
         vi++;
       }
+      rb.blitAlpha(Main.g.amB("paper-sub"), 9, 9);
       if (room.state.title != null) Text.render(rb, 9, 9, room.state.title);
       cacheBg[room.state.id] = rb;
     }

@@ -58,6 +58,8 @@ ROGUELIKE
    - [ ] paper routines
      - [x] paper of arbitrary size
      - [x] cut outs
+     - [x] conspiracy photos
+     - [ ] header fonts
      - [ ] folds
      - [ ] scratch-off surfaces
      - [ ] font aligned on paper
@@ -86,7 +88,6 @@ ROGUELIKE
 
 ### Ideas dump ###
 
- - photos / newspaper cuttings
  - where's the truth @ ? (intro screen)
 
 ### Photos ###

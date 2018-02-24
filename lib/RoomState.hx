@@ -23,8 +23,8 @@ class RoomState {
   
   public function new() {
     id = ROOM_ID++;
-    width = 10;
-    height = 20;
+    width = 30;
+    height = 15;
     wh = width * height;
     w2 = width * 2;
     h2 = height * 2;
