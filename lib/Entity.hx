@@ -20,6 +20,14 @@ class Entity {
     
   }
   
+  public function moveTo(to:RoomState, tx:Int, ty:Int):Void {
+    room.entities.remove(this);
+    room = to;
+    room.entities.push(this);
+    x = tx;
+    y = ty;
+  }
+  
   public inline function walkOrtho(ox:Int, oy:Int):Bool {
     return walk(ox, ox != 0 ? 0 : oy);
   }
@@ -28,6 +36,12 @@ class Entity {
     var nx = x + ox;
     var ny = y + oy;
     if (!nx.withinI(0, room.w2 - 1) || !ny.withinI(0, room.h2 - 1)) return false;
+    for (p in room.portals) {
+      if (nx == p.fx && ny == p.fy) {
+        moveTo(p.to, p.tx, p.ty);
+        return true;
+      }
+    }
     switch (room.walls[room.indexTile(nx, ny)]) {
       case Solid: return false;
       case _:

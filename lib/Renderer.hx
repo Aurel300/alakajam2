@@ -79,7 +79,9 @@ class Renderer {
     state.layout.rooms.map(renderRoom.bind(_, state, ab));
     for (l in state.layout.rooms) {
       for (t in l.state.tapes) {
-        if (t.from == l.state) renderTape(t, l, ab);
+        if (t.from == l.state && (t.from.visited || t.to.visited)) {
+          renderTape(t, l, ab);
+        }
       }
     }
   }
@@ -197,9 +199,11 @@ class Renderer {
         }
       }
     }
-    room.x.target(room.tx, 19);
-    room.y.target(room.ty, 19);
-    room.z.target(room.tz, 29);
+    if (room.state.visited) {
+      room.x.target(room.tx, 19);
+      room.y.target(room.ty, 19);
+      room.z.target(room.tz, 29);
+    }
     var rx = room.x.floor() - camX.floor();
     var ry = room.y.floor() - room.z.floor() - camY.floor();
     if (rx < Main.W && ry < Main.H

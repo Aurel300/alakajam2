@@ -85,9 +85,8 @@ class Procgen {
     var h = minSide + ((minSide >> 1) - varSide);
     var grid = [ for (y in 0...h) for (x in 0...w) -1 ];
     inline function idx(x:Int, y:Int) return x + y * w;
-    var initial = 4; //idx(FM.prng.nextMod(w), FM.prng.nextMod(h));
+    var initial = idx(FM.prng.nextMod(w), FM.prng.nextMod(h));
     grid[initial] = 0;
-    trace(w, h, initial);
     var order = [ for (r in 1...roomCount) {
         var pos = [];
         var gi = 0;
@@ -107,11 +106,10 @@ class Procgen {
           gi++;
         }
         var nxt = FM.prng.nextElement(pos);
-        trace(nxt);
         grid[nxt.pos] = r;
-        {at: nxt.pos, from: FM.prng.nextElement([ for (k in nxt.from.keys()) if (nxt.from[k]) k ])};
+        {at: nxt.pos, r: r, from: FM.prng.nextElement([ for (k in nxt.from.keys()) if (nxt.from[k]) k ])};
       } ];
-    order.unshift({at: initial, from: -1});
+    order.unshift({at: initial, r: 0, from: -1});
     var storyIndices = [ for (i in 0...roomCount) i ];
     while (storyIndices.length > storyRooms) {
       storyIndices.splice(FM.prng.nextMod(storyIndices.length), 1);
@@ -126,6 +124,7 @@ class Procgen {
         var nx = n.at % w;
         var ny = (n.at / w).floor();
         var rstate = createRoom(storyIndices.indexOf(n.at) != -1 ? Clipping : Normal, story);
+        rstate.title = '${n.r + 1}';
         gridStates[n.at] = rstate;
         maxW[nx] = maxW[nx].maxI(rstate.width);
         maxH[ny] = maxH[ny].maxI(rstate.height);
@@ -139,39 +138,57 @@ class Procgen {
     var colY = [ for (y in 1...h) colRy += maxH[y - 1] ];
     colX.unshift(0);
     colY.unshift(0);
-    trace(colX, colY);
     for (s in states) {
+      var fox = 0;
+      var foy = 0;
       if (s.from != -1) {
         var sfx = s.from % w;
         var sfy = (s.from / w).floor();
+        fox = s.x - sfx;
+        foy = s.y - sfy;
         var tape = new Tape(gridStates[s.from], s.state);
         tape.vertical = sfx == s.x;
-        trace(tape.vertical);
         if (tape.vertical) {
+          function portY(s1:RoomState, s2:RoomState, x:Int, y1:Int, y2:Int, s1h:Bool):Void {
+            s1.portals.push({to: s2, fx: x,     fy: y1, tx: x,     ty: y2 + (s1h ? 1 : -1)});
+            s1.portals.push({to: s2, fx: x + 1, fy: y1, tx: x + 1, ty: y2 + (s1h ? 1 : -1)});
+            s2.portals.push({to: s1, fx: x,     fy: y2, tx: x,     ty: y1 + (s1h ? -1 : 1)});
+            s2.portals.push({to: s1, fx: x + 1, fy: y2, tx: x + 1, ty: y1 + (s1h ? -1 : 1)});
+          }
           tape.fromX = 1 + FM.prng.nextMod(minW[s.x] * 2 - 4);
           if (s.from < s.at) {
             tape.fromY = gridStates[s.from].height * 2 - 3;
             tape.length = 6 + (maxH[sfy] - gridStates[s.from].height) * 2;
+            portY(gridStates[s.from], s.state, tape.fromX + 1, tape.fromY + 1, 1, true);
           } else {
             tape.fromY = 1;
             tape.length = -(6 + (maxH[s.y] - s.state.height) * 2);
+            portY(gridStates[s.from], s.state, tape.fromX + 1, 1, s.state.h2 - 2, false);
           }
         } else {
+          function portX(s1:RoomState, s2:RoomState, y:Int, x1:Int, x2:Int, s1l:Bool):Void {
+            s1.portals.push({to: s2, fy: y,     fx: x1, ty: y,     tx: x2 + (s1l ? 1 : -1)});
+            s1.portals.push({to: s2, fy: y + 1, fx: x1, ty: y + 1, tx: x2 + (s1l ? 1 : -1)});
+            s2.portals.push({to: s1, fy: y,     fx: x2, ty: y,     tx: x1 + (s1l ? -1 : 1)});
+            s2.portals.push({to: s1, fy: y + 1, fx: x2, ty: y + 1, tx: x1 + (s1l ? -1 : 1)});
+          }
           tape.fromY = 1 + FM.prng.nextMod(minH[s.y] * 2 - 4);
           if (s.from < s.at) {
             tape.fromX = gridStates[s.from].width * 2 - 3;
             tape.length = 6 + (maxW[sfx] - gridStates[s.from].width) * 2;
+            portX(gridStates[s.from], s.state, tape.fromY + 1, tape.fromX + 1, 1, true);
           } else {
             tape.fromX = 1;
             tape.length = -(6 + (maxW[s.x] - s.state.width) * 2);
+            portX(gridStates[s.from], s.state, tape.fromY + 1, 1, s.state.w2 - 2, false);
           }
         }
         gridStates[s.from].tapes.push(tape);
       }
       ret.rooms.push({
            state: s.state
-          ,x: colX[s.x] * Renderer.ROOM_SIZE
-          ,y: colY[s.y] * Renderer.ROOM_SIZE
+          ,x: colX[s.x] * Renderer.ROOM_SIZE + fox * Main.W
+          ,y: colY[s.y] * Renderer.ROOM_SIZE + foy * Main.H
           ,z: 0
           ,tx: colX[s.x] * Renderer.ROOM_SIZE
           ,ty: colY[s.y] * Renderer.ROOM_SIZE

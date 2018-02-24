@@ -7,6 +7,7 @@ class RoomState {
   static inline var POV_STRENGTH:Float = 100;
   
   public var id:Int;
+  public var visited:Bool = false;
   public var width:Int;
   public var height:Int;
   public var w2:Int;
@@ -21,6 +22,7 @@ class RoomState {
   public var title:String;
   public var boundary:Vector<Point2DI>;
   public var tapes:Array<Tape> = [];
+  public var portals:Array<Portal> = [];
   
   public function new(type:RoomType, width:Int, height:Int) {
     this.type = type;

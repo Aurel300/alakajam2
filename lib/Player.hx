@@ -9,6 +9,7 @@ class Player extends Entity {
   }
   
   override public function tick(state:GameState):Void {
+    room.visited = true;
     if (cdWalk == 0) {
       if (walkOrtho(
            (1).negposI(state.keys.left, state.keys.right)

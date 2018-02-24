@@ -68,7 +68,7 @@ ROGUELIKE
        - [ ] player
      - [.] animate dis/appearance
        - [ ] shadow
-   - [ ] piece of tape for corridors
+   - [x] piece of tape for corridors
  - gameplay
    - [ ] room generation
      - [x] generate macro-grid
@@ -84,10 +84,7 @@ ROGUELIKE
      - [ ] text justify
      - [ ] mark words - words become enemies / censored
    - [ ] controls
-     - [.] moving around
-       - [x] speed limit
-       - [x] collision
-       - [ ] other rooms
+     - [x] moving around
      - [ ] shooting?
      - [x] vision cone
      - [x] left click to see
