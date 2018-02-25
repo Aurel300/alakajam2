@@ -3,13 +3,15 @@ package lib;
 class Enemy extends Entity {
   var letter:String;
   var holding:Array<Item> = [];
-  var gold:Int = 0;
+  var gold = 0;
+  var cdAttack = 0;
   
   public function new(letter:String, x:Int, y:Int) {
     super(Enemy, Always);
     this.letter = letter;
-    if (FM.prng.nextMod(5) == 0) holding = [Item.drop()];
+    if (FM.prng.nextMod(5) == 0) holding = [Procgen.createItem()];
     if (FM.prng.nextMod(4) == 0) gold = 1 + FM.prng.nextMod(30);
+    health = 5;
     this.x = x;
     this.y = y;
   }
@@ -24,17 +26,26 @@ class Enemy extends Entity {
     return true;
   }
   
-  public function hurt():Void {
-    for (i in holding) room.entities.push(new ItemDrop(i, x, y));
-    if (gold > 0) room.entities.push(new GoldDrop(gold, x, y));
-    room.fix();
-    Main.g.state.framePause += 20;
-    remove();
+  override public function attack(other:Entity):Void {
+    if (cdAttack != 0) return;
+    other.hurt(this, 1, 0, 0);
+    cdAttack = 10;
+  }
+  
+  override public function hurt(by:Entity, attack:Int, stun:Int, poison:Int):Bool {
+    if (super.hurt(by, attack, stun, poison)) {
+      for (i in holding) room.add(new ItemDrop(i, x, y));
+      if (gold > 0) room.add(new GoldDrop(gold, x, y));
+      Main.g.state.framePause += 20;
+      return true;
+    }
+    return false;
   }
   
   override public function tick(state:GameState):Void {
     super.tick(state);
-    if (!room.visited) return;
+    if (!room.visited || stun > 0) return;
+    if (cdAttack > 0) cdAttack--;
     if (FM.prng.nextMod(10) == 0) {
       walkOrtho(FM.prng.nextMod(3) - 1, FM.prng.nextBool() ? 1 : -1);
     }

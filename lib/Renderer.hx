@@ -8,6 +8,7 @@ class Renderer {
   
   public static var roomPieces:Array<Bitmap>;
   public static var desk:Array<Bitmap>;
+  public static var fold:Bitmap;
   public static var tape:Bitmap;
   
   public static function init(am:AssetManager):Void {
@@ -24,6 +25,7 @@ class Renderer {
     desk = [ for (y in 0...3) for (x in 0...4)
         s >> new Cut(112 + x * 16, 8 + y * 16, 16, 16)
       ];
+    fold = s >> new Cut(0, 104, 80, 16);
     tape = s >> new Cut(80, 40, 32, 32);
   }
   
@@ -182,10 +184,12 @@ class Renderer {
         rb.blitAlpha(b, x, y);
         case Text(txt, x, y):
         Text.render(rb, x, y, txt);
+        case Fold(x, y, w):
+        rb.blitAlpha(fold.fluent >> new Box(new Point2DI(16, 8), new Point2DI(64, 8), w, 16), x, y);
       }
       cacheBg[room.state.id] = rb;
     }
-    {
+    if (room.state.type != CharSheet) {
       if (!cacheText.exists(room.state.id)) {
         cacheText[room.state.id] = {
              txt: [ for (y in 0...room.state.height * 2) null ]
@@ -243,7 +247,11 @@ class Renderer {
     if (rx < Main.W && ry < Main.H
         && rx >= -ROOM_SIZE * room.state.width && ry >= -ROOM_SIZE * room.state.height) {
       ab.blitAlpha(cacheBg[room.state.id], rx, ry);
-      ab.blitAlpha(cacheText[room.state.id].res, rx, ry);
+      if (room.state.type != CharSheet) ab.blitAlpha(cacheText[room.state.id].res, rx, ry);
+      else {
+        var player = Main.g.state.player;
+        Text.render(ab, rx + player.x * 8, ry + player.y * 8 - 4, "@", Mono1);
+      }
     }
     if (room.state == state.mouseRoom) {
       ab.set(rx + state.mouseX, ry + state.mouseY, Colour.BLUE);

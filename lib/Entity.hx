@@ -7,6 +7,9 @@ class Entity {
   public var type:EntityType;
   public var povType:PovType;
   public var pov:Int = 0;
+  public var health:Int = 0;
+  public var stun:Int = 0;
+  public var poison:Int = 0;
   
   public function new(type:EntityType, povType:PovType) {
     this.type = type;
@@ -14,6 +17,15 @@ class Entity {
   }
   
   public function tick(state:GameState):Void {
+    if (health > 0) {
+      if (stun > 0) stun--;
+      if (poison > 0) {
+        if (FM.prng.nextMod(30) < poison) {
+          health = (health - FM.prng.nextMod(poison - 1) - 1).maxI(1);
+          poison--;
+        }
+      }
+    }
     pov = pov.maxI(room.pov[room.indexTile(x, y)]);
     if (pov > 0) pov--;
   }
@@ -30,8 +42,29 @@ class Entity {
     
   }
   
+  public function hurt(by:Entity, attack:Int, stun:Int, poison:Int):Bool {
+    var nh = health - attack;
+    if (nh <= 0) {
+      if (FM.prng.nextMod(2) == 0) {
+        health = 1;
+      } else {
+        health = 0;
+        remove();
+        return true;
+      }
+    }
+    health = nh;
+    this.stun += stun;
+    this.poison += poison;
+    return false;
+  }
+  
   public function remove():Void {
     room.entities.remove(this);
+  }
+  
+  public function attack(other:Entity):Void {
+    
   }
   
   public function moveTo(to:RoomState, tx:Int, ty:Int):Void {
@@ -70,7 +103,10 @@ class Entity {
           if (pickedUp) e.remove();
           else return false;
           case Enemy if (type == Player):
-          (cast e:Enemy).hurt();
+          attack(e);
+          return false;
+          case Player if (type == Enemy):
+          attack(e);
           return false;
           case _:
           return false;

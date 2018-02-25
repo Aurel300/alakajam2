@@ -22,9 +22,11 @@ class GameState {
   public var framePause:Int = 0;
   
   public function new() {
+    Main.g.state = this;
     rpg = new RPG();
     charSheet = Scenario.charSheet();
-    charTween = new Bitween(50);
+    charTween = new Bitween(5/*50*/);
+    charTween.setTo(true, false);
     //scenario = Scenario.intro();
     scenario = Procgen.createScenario();
     selectFloor(0);
@@ -48,6 +50,7 @@ class GameState {
       framePause--;
       return;
     }
+    rpg.tick();
     var wasChar = charTween.isOn || charTween.value == charTween.length;
     charTween.tick();
     if (wasChar != charTween.isOn) {
@@ -55,10 +58,16 @@ class GameState {
         charPaused = player.room;
         charPausedX = player.x;
         charPausedY = player.y;
+        player.isCharSheet = true;
         player.moveTo(charSheet.state, 14, 18);
       } else {
+        player.isCharSheet = false;
         player.moveTo(charPaused, charPausedX, charPausedY);
       }
+    }
+    if (!charTween.isOff) {
+      charSheet.state.tick(this);
+      return;
     }
     for (room in layout.rooms) {
       room.state.tick(this);

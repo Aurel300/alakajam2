@@ -40,6 +40,11 @@ class Text {
     fonts[initial].render(ab, tx, ty, text, fonts);
   }
   
+  public static function centred(txt:String, x:Int, y:Int, ?ft:FontType = Regular):RoomVisual {
+    var tw = fonts[ft].render(tmp, 0, 0, txt, fonts).x;
+    return Text(txt, x - (tw >> 1), y);
+  }
+  
   public static function justify(txt:String, width:Int, ?ft:FontType = Regular):{
     res:Bitmap, marks:Array<{pt:Point2DI, txt:String}>
   } {
@@ -52,8 +57,8 @@ class Text {
     var lineWidths = [];
     var lineWords = [];
     var lineWidth = 0;
-    var minSpace = width * 0.1;
-    var maxSpacing = 20.0;
+    var minSpace = width * 0.04;
+    var maxSpacing = 4.0;
     while (words.length > 0) {
       var curWord = words.shift();
       if (width - (curWord.width + lineWidth) >= minSpace) {

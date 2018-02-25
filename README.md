@@ -93,14 +93,16 @@ ROGUELIKE
      - [x] moving around
      - [x] vision cone
      - [x] left click to see
-     - [ ] attacking
+     - [x] attacking
    - [ ] RPG / rogue elements
      - [x] tutorial / options / menu
      - [ ] floor progression
      - [ ] turns
-     - **[ ] character sheet**
-     - **[.] items**
-     - [ ] stats
+     - [x] character sheet
+     - [x] items
+     - [ ] event log
+     - [ ] gameover
+     - [x] stats
      - [ ] experience
  - audio
    - not my problem :D
