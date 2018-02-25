@@ -21,12 +21,13 @@ class Main extends Application {
              Embed.getBitmap("paper", "../../png/paper.png")
             ,Embed.getBitmap("alien", "../../paper-raw/alien-thumb.png")
             ,Embed.getBitmap("bunker", "../../paper-raw/bunker-thumb.png")
+            ,Embed.getBitmap("eye", "../../paper-raw/eye-thumb.png")
             ,Embed.getBitmap("plane", "../../paper-raw/plane-thumb.png")
             ,Embed.getBitmap("rig", "../../paper-raw/rig-thumb.png")
             ,Embed.getBitmap("sub", "../../paper-raw/sub-thumb.png")
             ,Embed.getBitmap("toxic", "../../paper-raw/toxic-thumb.png")
             ,Embed.getBitmap("ufo", "../../paper-raw/ufo-thumb.png")
-            ,new AssetBind(["alien", "bunker", "plane", "rig", "sub", "toxic", "ufo"], (am, _) -> {
+            ,new AssetBind(["alien", "bunker", "eye", "plane", "rig", "sub", "toxic", "ufo"], (am, _) -> {
                 p.doIt();
                 false;
               })
@@ -46,7 +47,7 @@ class Paper extends JamState {
     var mat = OrderedDither.BAYER_16.map(n -> n / 256);
     var png = new sk.thenet.format.bmp.PNG();
     var pal = [ for (i in 0...11) sv[i * 4] ];
-    for (photo in ["alien", "bunker", "plane", "rig", "sub", "toxic", "ufo"]) {
+    for (photo in ["alien", "bunker", "eye", "plane", "rig", "sub", "toxic", "ufo"]) {
       var src = amB(photo);
       var srcv = src.getVector();
       var res = Platform.createBitmap(src.width, src.height, 0);

@@ -97,7 +97,7 @@ ROGUELIKE
      - [ ] right click to shoot
        - [ ] bresenham shooting
    - [ ] RPG / rogue elements
-     - [ ] tutorial / options / menu
+     - [x] tutorial / options / menu
      - [ ] floor progression
      - [ ] character sheet
      - [ ] items

@@ -3,9 +3,10 @@ package lib;
 class Player extends Entity {
   var cdWalk:Int = 0;
   
-  public function new() {
+  public function new(x:Int, y:Int) {
     super(Player, Always);
-    x = y = 2;
+    this.x = x;
+    this.y = y;
   }
   
   override public function tick(state:GameState):Void {

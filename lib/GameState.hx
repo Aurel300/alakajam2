@@ -17,10 +17,16 @@ class GameState {
   
   public function new() {
     rpg = new RPG();
-    scenario = Procgen.createScenario();
+    scenario = Scenario.intro();
+    //scenario = Procgen.createScenario();
     layout = scenario.floors[0];
-    layout.rooms[0].state.entities.push(player = new Player());
-    for (r in layout.rooms) r.state.fix();
+    for (r in layout.rooms) {
+      for (e in r.state.entities) if (e.type == Player) {
+        player = (cast e:Player);
+        break;
+      }
+      r.state.fix();
+    }
   }
   
   public function tick() {

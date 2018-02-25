@@ -16,6 +16,10 @@ class Renderer {
         s >> new Cut(x * 16, 8 + y * 16, 16, 16)
       ].concat([ for (y in 0...2) for (x in 0...2)
         s >> new Cut(48 + x * 16, 8 + y * 16, 16, 16)
+      ]).concat([ for (y in 0...3) for (x in 0...3)
+        s >> new Cut(x * 16, 56 + y * 16, 16, 16)
+      ]).concat([ for (y in 0...2) for (x in 0...2)
+        s >> new Cut(48 + x * 16, 56 + y * 16, 16, 16)
       ]);
     desk = [ for (y in 0...3) for (x in 0...4)
         s >> new Cut(112 + x * 16, 8 + y * 16, 16, 16)
@@ -147,6 +151,7 @@ class Renderer {
             ,0, 6, 0, 3
             ,8, 7, 5, dng
           ][ng];
+        if (room.state.type == Light) rp += 13;
         rb.blitAlpha(roomPieces[rp], x * ROOM_SIZE, y * ROOM_SIZE);
         vi++;
       }
@@ -155,11 +160,15 @@ class Renderer {
       for (v in room.state.visuals) switch (v) {
         case Justify(txt, x, y, w):
         rb.blitAlpha(Text.justify(txt, w).res, x, y);
+        case JustifyFont(txt, x, y, w, ft):
+        rb.blitAlpha(Text.justify(txt, w, ft).res, x, y);
         case Photo(id, x, y, w, h):
         var p = Main.g.amB('paper-${id}');
         rb.blitAlphaRect(p, x, y, (p.width - w) >> 1, (p.height - h) >> 1, w, h);
         case Bitmap(b, x, y):
         rb.blitAlpha(b, x, y);
+        case Text(txt, x, y):
+        Text.render(rb, x, y, txt);
       }
       cacheBg[room.state.id] = rb;
     }

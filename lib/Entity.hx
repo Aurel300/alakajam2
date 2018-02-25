@@ -35,6 +35,7 @@ class Entity {
   }
   
   public function walk(ox:Int, oy:Int):Bool {
+    if (ox == 0 && oy == 0) return false;
     var nx = x + ox;
     var ny = y + oy;
     if (!nx.withinI(0, room.w2 - 1) || !ny.withinI(0, room.h2 - 1)) return false;
@@ -44,13 +45,14 @@ class Entity {
         return true;
       }
     }
-    switch (room.walls[room.indexTile(nx, ny)]) {
-      case None:
-      case _: return false;
-    }
     for (e in room.entities) {
       if (e == this) continue;
       if (e.x == nx && e.y == ny) return false; // bump action
+    }
+    switch (room.walls[room.indexTile(nx, ny)]) {
+      case None:
+      case Trigger(action): action(this);
+      case _: return false;
     }
     x = nx;
     y = ny;

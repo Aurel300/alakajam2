@@ -71,8 +71,29 @@ class RoomState {
     }
   }
   
+  public function wallRect(rect:Array<WallType>, sx:Int, sy:Int, w:Int, h:Int):Void {
+    var ri = 0;
+    for (y in sy...(sy + h)) for (x in sx...(sx + w)) {
+      walls[indexTile(x, y)] = rect[ri++];
+    }
+  }
+  
   public inline function indexTile(x:Int, y:Int):Int {
     return x + y * w2;
+  }
+  
+  public function portWide(s2:RoomState, x:Int, length:Int, y1:Int, y2:Int, s1h:Bool):Void {
+    for (i in 0...length) {
+         portals.push({to: s2,   fx: x + i, fy: y1, tx: x + i, ty: y2 + (s1h ? 1 : -1)});
+      s2.portals.push({to: this, fx: x + i, fy: y2, tx: x + i, ty: y1 + (s1h ? -1 : 1)});
+    }
+  }
+  
+  public function portHigh(s2:RoomState, y:Int, length:Int, x1:Int, x2:Int, s1l:Bool):Void {
+    for (i in 0...length) {
+         portals.push({to: s2,   fy: y + i, fx: x1, ty: y + i, tx: x2 + (s1l ? 1 : -1)});
+      s2.portals.push({to: this, fy: y + i, fx: x2, ty: y + i, tx: x1 + (s1l ? -1 : 1)});
+    }
   }
   
   public function vision(px:Int, py:Int, mx:Int, my:Int) {

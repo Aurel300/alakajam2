@@ -26,15 +26,18 @@ class Main extends Application {
         ,Assets([
              Embed.getBitmap("paper", "png/paper.png")
             ,Embed.getBitmap(font.FontFancy8x13.ASSET_ID, "png/fancy8x13.png")
+            ,Embed.getBitmap(font.FontNS.ASSET_ID, "png/ns8x16.png")
+            ,Embed.getBitmap(font.FontSymbol8x13.ASSET_ID, "png/symbol8x13.png")
             ,Embed.getBitmap("paper-alien", "paper/alien.png")
             ,Embed.getBitmap("paper-bunker", "paper/bunker.png")
+            ,Embed.getBitmap("paper-eye", "paper/eye.png")
             ,Embed.getBitmap("paper-plane", "paper/plane.png")
             ,Embed.getBitmap("paper-rig", "paper/rig.png")
             ,Embed.getBitmap("paper-sub", "paper/sub.png")
             ,Embed.getBitmap("paper-toxic", "paper/toxic.png")
             ,Embed.getBitmap("paper-ufo", "paper/ufo.png")
             ,new AssetBind([
-                 "paper", font.FontFancy8x13.ASSET_ID
+                 "paper", font.FontFancy8x13.ASSET_ID, font.FontNS.ASSET_ID
                 ,"paper-alien"
                 ,"paper-bunker"
                 ,"paper-plane"

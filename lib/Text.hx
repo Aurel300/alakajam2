@@ -16,6 +16,10 @@ class Text {
         ,font.FontFancy8x13.init(am, Pal.paper[8], Pal.paper[6], Pal.paper[4], 1, 0, 1, -4)
         ,font.FontFancy8x13.init(am, Pal.paper[7], Pal.paper[6], Pal.paper[4], 1, 0, 1, -4)
         ,font.FontFancy8x13.init(am, Pal.paper[6], Pal.paper[6], Pal.paper[4], 1, 0, 1, -4)
+        ,font.FontFancy8x13.initAuto(am, Pal.paper[8], Pal.paper[6], Pal.paper[4])
+        ,font.FontNS.initAuto(am, Pal.paper[10], Pal.paper[6], Pal.paper[4])
+        ,font.FontNS.initAuto(am, Pal.paper[8], Pal.paper[6], Pal.paper[4])
+        ,font.FontSymbol8x13.init(am, Pal.paper[10], Pal.paper[6], null, 1, 0, 0, -5)
       ];
   }
   
@@ -27,13 +31,17 @@ class Text {
     return "$" + String.fromCharCode("A".code + ft);
   }
   
+  public static inline function c(l:Int):String {
+    return t(Symbol) + "G" + "".lpad("H", l) + "I";
+  }
+  
   public static function render(
     ab:Bitmap, tx:Int, ty:Int, text:String, ?initial:FontType = Regular
   ):Void {
     fonts[initial].render(ab, tx, ty, text, fonts);
   }
   
-  public static function justify(txt:String, width:Int):{
+  public static function justify(txt:String, width:Int, ?ft:FontType = Regular):{
     res:Bitmap, marks:Array<{pt:Point2DI, txt:String}>
   } {
     var words = txt.split(" ").map(w -> {
@@ -74,7 +82,7 @@ class Text {
           marks.push({pt: new Point2DI((cx / 8).floor() * 8, cy), txt: w.txt.substr(2)});
         else
           fonts[0].render(
-              res, cx.floor() + 1, cy, w.txt, fonts
+              res, cx.floor() + 1, cy, t(ft) + w.txt, fonts
             );
         cx += w.width + spacing;
       }

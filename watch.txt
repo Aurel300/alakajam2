@@ -1,1 +1,2 @@
 paper:psd/paper.psd:png/paper.png
+symbol:psd/symbol8x13.psd:png/symbol8x13.png

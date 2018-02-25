@@ -138,6 +138,7 @@ class Procgen {
     var colY = [ for (y in 1...h) colRy += maxH[y - 1] ];
     colX.unshift(0);
     colY.unshift(0);
+    states[0].state.entities.push(new Player(2, 2));
     for (s in states) {
       var fox = 0;
       var foy = 0;
@@ -149,38 +150,26 @@ class Procgen {
         var tape = new Tape(gridStates[s.from], s.state);
         tape.vertical = sfx == s.x;
         if (tape.vertical) {
-          function portY(s1:RoomState, s2:RoomState, x:Int, y1:Int, y2:Int, s1h:Bool):Void {
-            s1.portals.push({to: s2, fx: x,     fy: y1, tx: x,     ty: y2 + (s1h ? 1 : -1)});
-            s1.portals.push({to: s2, fx: x + 1, fy: y1, tx: x + 1, ty: y2 + (s1h ? 1 : -1)});
-            s2.portals.push({to: s1, fx: x,     fy: y2, tx: x,     ty: y1 + (s1h ? -1 : 1)});
-            s2.portals.push({to: s1, fx: x + 1, fy: y2, tx: x + 1, ty: y1 + (s1h ? -1 : 1)});
-          }
           tape.fromX = 1 + FM.prng.nextMod(minW[s.x] * 2 - 5);
           if (s.from < s.at) {
-            tape.fromY = gridStates[s.from].height * 2 - 3;
+            tape.fromY = gridStates[s.from].h2 - 3;
             tape.length = 6 + (maxH[sfy] - gridStates[s.from].height) * 2;
-            portY(gridStates[s.from], s.state, tape.fromX + 1, tape.fromY + 1, 1, true);
+            gridStates[s.from].portWide(s.state, tape.fromX + 1, 2, tape.fromY + 1, 1, true);
           } else {
             tape.fromY = 1;
             tape.length = -(6 + (maxH[s.y] - s.state.height) * 2);
-            portY(gridStates[s.from], s.state, tape.fromX + 1, 1, s.state.h2 - 2, false);
+            gridStates[s.from].portWide(s.state, tape.fromX + 1, 2, 1, s.state.h2 - 2, false);
           }
         } else {
-          function portX(s1:RoomState, s2:RoomState, y:Int, x1:Int, x2:Int, s1l:Bool):Void {
-            s1.portals.push({to: s2, fy: y,     fx: x1, ty: y,     tx: x2 + (s1l ? 1 : -1)});
-            s1.portals.push({to: s2, fy: y + 1, fx: x1, ty: y + 1, tx: x2 + (s1l ? 1 : -1)});
-            s2.portals.push({to: s1, fy: y,     fx: x2, ty: y,     tx: x1 + (s1l ? -1 : 1)});
-            s2.portals.push({to: s1, fy: y + 1, fx: x2, ty: y + 1, tx: x1 + (s1l ? -1 : 1)});
-          }
           tape.fromY = 1 + FM.prng.nextMod(minH[s.y] * 2 - 5);
           if (s.from < s.at) {
-            tape.fromX = gridStates[s.from].width * 2 - 3;
+            tape.fromX = gridStates[s.from].w2 - 3;
             tape.length = 6 + (maxW[sfx] - gridStates[s.from].width) * 2;
-            portX(gridStates[s.from], s.state, tape.fromY + 1, tape.fromX + 1, 1, true);
+            gridStates[s.from].portHigh(s.state, tape.fromY + 1, 2, tape.fromX + 1, 1, true);
           } else {
             tape.fromX = 1;
             tape.length = -(6 + (maxW[s.x] - s.state.width) * 2);
-            portX(gridStates[s.from], s.state, tape.fromY + 1, 1, s.state.w2 - 2, false);
+            gridStates[s.from].portHigh(s.state, tape.fromY + 1, 2, 1, s.state.w2 - 2, false);
           }
         }
         gridStates[s.from].tapes.push(tape);
@@ -200,7 +189,7 @@ class Procgen {
   
   public static function createRoom(type:RoomType, story:Story):RoomState {
     return (switch (type) {
-        case Normal:
+        case Normal | Light:
         new RoomState(type, 4 + FM.prng.nextMod(4), 4);
         case Clipping:
         var w = 8 + FM.prng.nextMod(12);
