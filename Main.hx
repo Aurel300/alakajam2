@@ -72,6 +72,8 @@ class Main extends Application {
       ]);
     preloader = new TNPreloader(this, "game", true);
     addState(g = new Game(this));
+    addState(new Switcher(this));
+    addState(new Message(this));
     mainLoop();
   }
 }

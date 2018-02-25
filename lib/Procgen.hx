@@ -10,11 +10,16 @@ using lib.Chance;
 class Procgen {
   static inline var MG_SIZE:Int = 50 * 16;
   
-  public static function createScenario():Scenario {
+  public static function createScenario():Array<{text:String, work:Void->Bool, ?next:String}> {
     var ret = new Scenario();
-    ret.story = createStory();
-    ret.floors = [createLayout(3, ret.story)];
-    return ret;
+    ret.floors = [];
+    return ([
+        {text: "Generating story...", work: () -> { ret.story = createStory(); return true; }}
+      ]:Array<{text:String, work:Void->Bool, ?next:String}>).concat([ for (i in 0...6)
+        {text: 'Generating floors ${i + 1} / 6...', work: () -> { ret.floors[i] = createLayout(3 + Chance.n(0, i), ret.story); return true; }}
+      ]).concat([
+        {text: 'Starting game...', work: () -> { Main.g.state.loadScenario(ret); return true; }, next: "game"}
+      ]);
   }
   
   static var ADJECTIVES = [

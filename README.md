@@ -61,7 +61,7 @@ ROGUELIKE
      - [x] cut outs
      - [x] conspiracy photos
      - [ ] header fonts
-     - [ ] folds
+     - [x] folds
      - [ ] scratch-off surfaces
      - [x] font aligned on paper
      - [x] text entities
@@ -95,12 +95,12 @@ ROGUELIKE
      - [x] attacking
    - [ ] RPG / rogue elements
      - [x] tutorial / options / menu
-     - [ ] floor progression
+     - [x] floor progression
      - [ ] turns
      - [x] character sheet
      - [x] items
      - [ ] event log
-     - [ ] gameover
+     - [x] gameover
      - [x] stats
      - [ ] experience
      - [ ] shop?

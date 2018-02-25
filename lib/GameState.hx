@@ -23,13 +23,27 @@ class GameState {
   
   public function new() {
     Main.g.state = this;
+    menu();
+  }
+  
+  public function menu():Void {
+    loadScenario(Scenario.intro());
+  }
+  
+  public function start():Void {
+    Switcher.tasks = Procgen.createScenario();
+    Main.g.st("switcher");
+  }
+  
+  public function loadScenario(s:Scenario):Void {
     rpg = new RPG();
     charSheet = Scenario.charSheet();
     charTween = new Bitween(5/*50*/);
-    charTween.setTo(true, false);
-    //scenario = Scenario.intro();
-    scenario = Procgen.createScenario();
+    //charTween.setTo(true, false);
+    scenario = s;
     selectFloor(0);
+    trace(s);
+    player.rpg = rpg;
   }
   
   public function selectFloor(n:Int):Void {

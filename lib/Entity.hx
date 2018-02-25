@@ -53,8 +53,7 @@ class Entity {
         remove();
         return true;
       }
-    }
-    health = nh;
+    } else health = nh;
     this.stun += stun;
     this.poison += poison;
     return false;

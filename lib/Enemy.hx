@@ -38,6 +38,7 @@ class Enemy extends Entity {
       if (gold > 0) room.add(new GoldDrop(gold, x, y));
       Main.g.state.framePause += 20;
       SFX.p("player-kill");
+      Main.g.state.rpg.kills++;
       return true;
     } else {
       SFX.p("enemy-hurt");

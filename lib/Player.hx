@@ -4,14 +4,13 @@ class Player extends Entity {
   public var isCharSheet:Bool = false;
   var cdWalk = 0;
   var cdAttack = 0;
-  var rpg:RPG;
+  public var rpg:RPG;
   
   public function new(x:Int, y:Int) {
     super(Player, Always);
     health = RPG.INITIAL_HEALTH;
     this.x = x;
     this.y = y;
-    rpg = Main.g.state.rpg;
   }
   
   override public function pickUpItem(i:Item):Bool {
@@ -48,6 +47,12 @@ class Player extends Entity {
     }
     var dead = super.hurt(by, attack, stun, poison);
     if (dead) {
+      Message.msg = Text.c(7) + Text.t(Regular) + ", you have been " + Text.c(3) + Text.t(Regular) + "\n"
+        + 'You have earned ${rpg.gold} GP\n'
+        + '      slain ${rpg.kills} foes\n'
+        + '      and discovered ${rpg.secrets} ' + Text.c(4) + Text.t(Regular) + "\n\n"
+        + "Click to " + Text.c(4) + Text.t(Regular) + " to H" + Text.c(8);
+      Main.g.st("message");
       SFX.p("player-death");
     }
     health = health.minI(rpg.maxHealth);
@@ -59,6 +64,7 @@ class Player extends Entity {
   override public function tick(state:GameState):Void {
     if (!room.visited) {
       SFX.p("page");
+      if (room.type == Clipping) rpg.secrets++;
       state.framePause = 30;
       room.visited = true;
     }

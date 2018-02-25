@@ -1,14 +1,18 @@
 package lib;
 
 class Game extends JamState {
-  public function new(app) super("game", app);
-  
   public var ren:Renderer;
   public var state:GameState;
   
+  public function new(app) {
+    super("game", app);
+  }
+  
   override public function to() {
-    ren = new Renderer();
-    state = new GameState();
+    if (ren == null) {
+      ren = new Renderer();
+      state = new GameState();
+    }
   }
   
   override public function tick() {

@@ -1,6 +1,8 @@
 package lib;
 
 class Scenario {
+  static var first:Bool = true;
+  
   public static function intro():Scenario {
     var ret = new Scenario();
     ret.story = new Story();
@@ -48,6 +50,9 @@ class Scenario {
       }];
     var title = layout.rooms[1];
     var options = layout.rooms[3];
+    layout.rooms[0].state.visited = true;
+    layout.rooms[2].state.visited = true;
+    layout.rooms[4].state.visited = true;
     layout.rooms[0].state.visuals.push(
         Photo("eye", 9, 9, 174, 174)
       );
@@ -60,11 +65,16 @@ class Scenario {
     title.state.visuals.push(
         Text(Text.t(Mono1) + "[" + Text.t(Mono5) + "@" + Text.t(Mono1) + "]", 263, 84)
       );
-            options.state.portWide(title.state, 4, 18, 1, title.state.h2 - 2, false);
-            options.state.visited = true;
+    // DEBUG
+    if (!first) {
+      options.state.portWide(title.state, 4, 18, 1, title.state.h2 - 2, false);
+      options.state.visited = true;
+    }
+    first = false;
     title.state.walls[title.state.indexTile(40 - 6, 16 - 5)]
       = WallType.Trigger((player) -> {
           if (!options.state.visited) {
+            SFX.p("page");
             options.state.portWide(title.state, 4, 18, 1, title.state.h2 - 2, false);
             options.state.visited = true;
           }
@@ -132,7 +142,7 @@ class Scenario {
     optTape.length = 20;
     options.state.tapes.push(optTape);
     title.state.entities.push(new Player(18, 3));
-    options.state.walls[options.state.indexTile(6, 51)] = WallType.Trigger((_) -> {});
+    options.state.walls[options.state.indexTile(6, 51)] = WallType.Trigger((_) -> Main.g.state.start());
     ret.floors = [layout];
     return ret;
   }
