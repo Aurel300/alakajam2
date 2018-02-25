@@ -12,4 +12,5 @@ abstract FontType(Int) from Int to Int {
   var Small = 7;
   var Small3 = 8;
   var Symbol = 9;
+  var Item = 10;
 }

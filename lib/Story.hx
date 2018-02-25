@@ -1,7 +1,5 @@
 package lib;
 
-using StringTools;
-
 class Story {
   public static var ALL_AGENTS = [{
       id: "gov", display: [

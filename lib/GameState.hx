@@ -19,6 +19,7 @@ class GameState {
   public var charPaused:RoomState;
   public var charPausedX:Int;
   public var charPausedY:Int;
+  public var framePause:Int = 0;
   
   public function new() {
     rpg = new RPG();
@@ -43,6 +44,10 @@ class GameState {
   }
   
   public function tick() {
+    if (framePause > 0) {
+      framePause--;
+      return;
+    }
     var wasChar = charTween.isOn || charTween.value == charTween.length;
     charTween.tick();
     if (wasChar != charTween.isOn) {

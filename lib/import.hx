@@ -14,3 +14,4 @@ import sk.thenet.geom.*;
 import sk.thenet.plat.Platform;
 
 using sk.thenet.FM;
+using StringTools;

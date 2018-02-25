@@ -1,7 +1,5 @@
 package lib;
 
-using StringTools;
-
 class Text {
   public static var fonts:Array<Font>;
   public static inline var REG = FontType.Mono4;
@@ -20,6 +18,7 @@ class Text {
         ,font.FontNS.initAuto(am, Pal.paper[10], Pal.paper[6], Pal.paper[4])
         ,font.FontNS.initAuto(am, Pal.paper[8], Pal.paper[6], Pal.paper[4])
         ,font.FontSymbol8x13.init(am, Pal.paper[10], Pal.paper[6], null, 1, 0, 0, -5)
+        ,font.FontFancy8x13.init(am, Pal.item[0], Pal.item[4], Pal.paper[3], 1, 0, 1, -4)
       ];
   }
   

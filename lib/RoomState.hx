@@ -24,6 +24,7 @@ class RoomState {
   public var tapes:Array<Tape> = [];
   public var portals:Array<Portal> = [];
   public var visuals:Array<RoomVisual> = [];
+  public var redrawVisuals:Bool = false;
   
   public function new(type:RoomType, width:Int, height:Int) {
     this.type = type;
@@ -60,6 +61,17 @@ class RoomState {
   }
   
   public function tick(state:GameState) {
+    if (type == CharSheet) {
+      visuals.push(
+          Text("Character factbook", 64, 116)
+        );
+      visuals.push(
+          Text(Text.t(Small3) + "< Press C to\n  continue", 144, 136)
+        );
+      visuals.push(
+          Text("Inventory", 92, 172)
+        );
+    }
     for (e in entities) e.tick(state);
     for (i in 0...wh4) if (pov[i] > 0) pov[i]--;
   }

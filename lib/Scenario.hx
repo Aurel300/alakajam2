@@ -147,15 +147,6 @@ class Scenario {
         ,ty: 0
         ,tz: 0
       };
-    ret.state.visuals.push(
-        Text("Character factbook", 64, 116)
-      );
-    ret.state.visuals.push(
-        Text(Text.t(Small3) + "< Press C to\n  continue", 144, 136)
-      );
-    ret.state.visuals.push(
-        Text("Inventory", 92, 172)
-      );
     ret.state.visited = true;
     return ret;
   }

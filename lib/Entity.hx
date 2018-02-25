@@ -18,12 +18,24 @@ class Entity {
     if (pov > 0) pov--;
   }
   
+  public function pickUpItem(i:Item):Bool {
+    return false;
+  }
+  
+  public function pickUpGold(g:Int):Bool {
+    return false;
+  }
+  
   public function print(str:Array<Array<String>>, pov:Int):Void {
     
   }
   
-  public function moveTo(to:RoomState, tx:Int, ty:Int):Void {
+  public function remove():Void {
     room.entities.remove(this);
+  }
+  
+  public function moveTo(to:RoomState, tx:Int, ty:Int):Void {
+    remove();
     room = to;
     room.entities.push(this);
     x = tx;
@@ -47,7 +59,23 @@ class Entity {
     }
     for (e in room.entities) {
       if (e == this) continue;
-      if (e.x == nx && e.y == ny) return false; // bump action
+      if (e.x == nx && e.y == ny) {
+        switch (e.type) {
+          case ItemDrop:
+          var pickedUp = pickUpItem((cast e:ItemDrop).item);
+          if (pickedUp) e.remove();
+          else return false;
+          case GoldDrop:
+          var pickedUp = pickUpGold((cast e:GoldDrop).gold);
+          if (pickedUp) e.remove();
+          else return false;
+          case Enemy if (type == Player):
+          (cast e:Enemy).hurt();
+          return false;
+          case _:
+          return false;
+        }
+      }
     }
     switch (room.walls[room.indexTile(nx, ny)]) {
       case None:

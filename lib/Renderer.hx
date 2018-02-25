@@ -132,7 +132,8 @@ class Renderer {
   }
   
   function renderRoom(room:RoomLayout, state:GameState, ab:Bitmap):Void {
-    if (!cacheBg.exists(room.state.id)) {
+    if (!cacheBg.exists(room.state.id) || room.state.redrawVisuals) {
+      room.state.redrawVisuals = false;
       var rb = Platform.createBitmap(
           ROOM_SIZE * room.state.width, ROOM_SIZE * room.state.height, 0
         );

@@ -97,8 +97,9 @@ ROGUELIKE
    - [ ] RPG / rogue elements
      - [x] tutorial / options / menu
      - [ ] floor progression
+     - [ ] turns
      - **[ ] character sheet**
-     - [ ] items
+     - **[.] items**
      - [ ] stats
      - [ ] experience
  - audio
