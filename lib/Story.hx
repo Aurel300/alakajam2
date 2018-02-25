@@ -31,7 +31,7 @@ class Story {
           ,{text: "Military", plural: false, formal: 1}
           ,{text: "Green Army Men", plural: true, formal: -1}
           ,{text: "GI Joes", plural: true, formal: -1}
-        ], factions: ["official"]
+        ], factions: ["official", "army"]
     }, {
       id: "citizen", display: [
            {text: "citizen", plural: false, formal: 1}

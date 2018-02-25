@@ -126,7 +126,11 @@ class Renderer {
         if (m.age > 180 + m.y) continue;
         m;
       } ];
-    ab.blitAlpha(cursors[state.charTween.isOn ? 0 : 1], Main.g.app.mouse.x, Main.g.app.mouse.y);
+    renderCursor(ab, state.charTween.isOn);
+  }
+  
+  public static function renderCursor(ab:Bitmap, ?normal:Bool = true):Void {
+    ab.blitAlpha(cursors[normal ? 0 : 1], Main.g.app.mouse.x, Main.g.app.mouse.y);
   }
   
   function renderTape(tape:Tape, from:RoomLayout, ab:Bitmap):Void {

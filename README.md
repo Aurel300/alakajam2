@@ -102,7 +102,7 @@ ROGUELIKE
      - [x] difficulty scaling
      - [x] experience
      - [ ] shop?
-     - [ ] working options screen
+     - [x] working options screen
      - [x] cursor + click anywhere to do vision
  - [ ] audio
    - [x] some sfx

@@ -16,6 +16,7 @@ class Message extends JamState {
     ab.fill(Pal.paper[8]);
     Text.render(ab, 20, 20, msg);
     if (timeOut > 0) timeOut--;
+    Renderer.renderCursor(ab);
   }
   
   override public function mouseClick(_, _) {

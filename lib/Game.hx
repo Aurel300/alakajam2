@@ -42,6 +42,8 @@ class Game extends JamState {
         state.charTween.toggle();
         SFX.p("pause");
       }
+      case KeyF:
+      st("fullscreen");
       case _:
     }
   }

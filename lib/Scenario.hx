@@ -51,7 +51,9 @@ class Scenario {
     var title = layout.rooms[1];
     var options = layout.rooms[3];
     layout.rooms[0].state.visited = true;
+    layout.rooms[1].state.visited = true;
     layout.rooms[2].state.visited = true;
+    //layout.rooms[3].state.visited = true;
     layout.rooms[4].state.visited = true;
     layout.rooms[0].state.visuals.push(
         Photo("eye", 9, 9, 174, 174)
@@ -120,15 +122,20 @@ class Scenario {
       curOpt += 16;
       curY += 2;
     }
+    option("Sound effects", [
+         {text: "On", action: (_) -> SFX.enabled = true}
+        ,{text: "Off", action: (_) -> SFX.enabled = false}
+      ]);
     option("Fullscreen", [
-         {text: "Yes", action: (_) -> {}}
-        ,{text: "No", action: (_) -> {}}
+         {text: "Yes", action: (_) -> {
+             Main.g.st("fullscreen");
+           }}
+        ,{text: "No", action: (_) -> {
+            untyped __js__('fsCancel()');
+          }}
       ]);
     option("Scale", [
-         {text: "1x", action: (_) -> {}}
-        ,{text: "2x", action: (_) -> {}}
-        ,{text: "3x", action: (_) -> {}}
-        ,{text: "4x", action: (_) -> {}}
+        for (s in 1...5) {text: s + "x", action: (_) -> { untyped __js__('document.getElementById("surf").style.width = (400 * {0}) + "px"; document.getElementById("surf").style.height = (300 * {0}) + "px";', s); }}
       ]);
     options.state.visuals.push(
         Text(Text.t(Mono1) + "[" + Text.t(Mono5)

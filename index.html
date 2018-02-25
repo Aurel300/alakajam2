@@ -1,6 +1,31 @@
 <!DOCTYPE html><html><head>
   <title>Game</title>
   <meta charset="utf-8">
+  <script type="text/javascript">
+function fsCheck() {
+  return !!(document.webkitFullscreenElement
+    || document.mozFullScreenElement
+    || document.msFullscreenElement
+    || document.fullscreenElement
+    || document.webkitIsFullscreen
+    || document.mozFullScreen
+    || document.msFullscreen
+    || document.fullscreen);
+}
+function fsRequest() {
+  var surf = document.getElementById("surf");
+  if (surf.webkitRequestFullscreen) surf.webkitRequestFullscreen();
+  else if (surf.mozRequestFullScreen) surf.mozRequestFullScreen();
+  else if (surf.msRequestFullscreen) surf.msRequestFullscreen();
+  else if (surf.requestFullscreen) surf.requestFullscreen();
+}
+function fsCancel() {
+  if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+  else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+  else if (document.msExitFullscreen) document.msExitFullscreen();
+  else if (document.exitFullscreen) document.exitFullscreen();
+}
+  </script>
   <script type="text/javascript" src="game.js"></script>
   <style type="text/css">#surf{cursor:none;}</style>
 </head><body>

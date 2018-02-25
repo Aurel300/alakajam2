@@ -21,5 +21,6 @@ class Switcher extends JamState {
         }
       }
     }
+    Renderer.renderCursor(ab);
   }
 }

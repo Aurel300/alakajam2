@@ -53,7 +53,8 @@ class Main extends Application {
             ,Embed.getSound("victory", "wav/victory.wav")
             ,Embed.getSound("vision", "wav/vision.wav")
             ,new AssetBind([
-                 "paper", font.FontFancy8x13.ASSET_ID, font.FontNS.ASSET_ID
+                 "paper"
+                ,font.FontFancy8x13.ASSET_ID, font.FontNS.ASSET_ID, font.FontSymbol8x13.ASSET_ID
                 ,"paper-alien"
                 ,"paper-bunker"
                 ,"paper-plane"
@@ -61,6 +62,22 @@ class Main extends Application {
                 ,"paper-sub"
                 ,"paper-toxic"
                 ,"paper-ufo"
+                ,"alert"
+                ,"chest"
+                ,"enemy-hurt"
+                ,"equip"
+                ,"gold"
+                ,"heal"
+                ,"page"
+                ,"pause"
+                ,"player-death"
+                ,"player-hurt"
+                ,"player-kill"
+                ,"player-step"
+                ,"poison"
+                ,"unequip"
+                ,"victory"
+                ,"vision"
               ], (am, _) -> {
                 Pal.init(am);
                 Text.init(am);
@@ -72,8 +89,9 @@ class Main extends Application {
         ,Keyboard
         ,Mouse
       ]);
-    preloader = new TNPreloader(this, "game", true);
+    preloader = new TNPreloader(this, "game", false);
     addState(g = new Game(this));
+    addState(new Fullscreen(this));
     addState(new Switcher(this));
     addState(new Message(this));
     mainLoop();

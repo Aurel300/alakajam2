@@ -3,7 +3,10 @@ package lib;
 import sk.thenet.audio.*;
 
 class SFX {
+  public static var enabled:Bool = true;
+  
   public static function p(id:String):Void {
+    if (!enabled) return;
     Main.g.amS(id).play();
   }
   

@@ -343,7 +343,15 @@ class Procgen {
     var colY = [ for (y in 1...h) colRy += maxH[y - 1] ];
     colX.unshift(0);
     colY.unshift(0);
-    states[0].state.entities.push(new Player(2, 2));
+    function placePlayer() {
+      for (y in 2...states[0].state.h2 - 3) for (x in 2...states[0].state.w2 - 3) {
+        if (states[0].state.walls[states[0].state.indexTile(x, y)] == WallType.None) {
+          states[0].state.entities.push(new Player(x, y));
+          return;
+        }
+      }
+    }
+    placePlayer();
     for (s in states) {
       var fox = 0;
       var foy = 0;
