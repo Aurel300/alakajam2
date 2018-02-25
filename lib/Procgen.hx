@@ -189,7 +189,7 @@ class Procgen {
   
   public static function createRoom(type:RoomType, story:Story):RoomState {
     return (switch (type) {
-        case Normal | Light:
+        case Normal | Light | CharSheet:
         new RoomState(type, 4 + FM.prng.nextMod(4), 4);
         case Clipping:
         var w = 8 + FM.prng.nextMod(12);

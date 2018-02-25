@@ -35,6 +35,9 @@ class RoomState {
     h2 = height * 2;
     wh4 = w2 * h2;
     mask = Vector.fromArrayCopy([ for (i in 0...wh) 1 ].map(n -> n > 0));
+    if (type == CharSheet) {
+      mask[7 + 9 * width] = false;
+    }
     walls = Vector.fromArrayCopy([ for (y in 0...h2) for (x in 0...w2)
         //x == 0 || x == w2 - 1 || y == 0 || y == height * 2 - 1 || FM.prng.nextBool() ? WallType.None : WallType.Solid
         x == 1 || x == w2 - 2 || y == 1 || y == h2 - 2 ? WallType.Invisible : WallType.None

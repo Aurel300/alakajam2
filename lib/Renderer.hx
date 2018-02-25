@@ -74,13 +74,23 @@ class Renderer {
       if (l.state == state.player.room) {
         camX.target(l.x + state.player.x * TILE_SIZE + 4 - Main.WH, 29);
         camY.target(l.y + state.player.y * TILE_SIZE + 4 - Main.HH, 29);
+        if (!state.charTween.isOn) {
+          state.charSheet.tx = l.x + state.player.x * TILE_SIZE - 7 * ROOM_SIZE;
+          state.charSheet.ty = l.y + state.player.y * TILE_SIZE - 9 * ROOM_SIZE;
+        }
         break;
       }
+    }
+    if (state.charTween.isOff) {
+      state.charSheet.x = state.charSheet.tx;
+      state.charSheet.y = state.charSheet.ty;
     }
     var dx = ((camX / DESK_W).floor() * DESK_W - camX).floor();
     var dy = ((camY / DESK_H).floor() * DESK_H - camY).floor();
     ab.blit(cacheDesk, dx, dy);
-    state.layout.rooms.map(renderRoom.bind(_, state, ab));
+    for (li in 0...state.layout.rooms.length - 1) {
+      renderRoom(state.layout.rooms[li], state, ab);
+    }
     for (l in state.layout.rooms) {
       for (t in l.state.tapes) {
         if (t.from == l.state && (t.from.visited || t.to.visited)) {
@@ -88,6 +98,8 @@ class Renderer {
         }
       }
     }
+    if (!state.charTween.isOff)
+      renderRoom(state.layout.rooms[state.layout.rooms.length - 1], state, ab);
   }
   
   function renderTape(tape:Tape, from:RoomLayout, ab:Bitmap):Void {
@@ -151,7 +163,7 @@ class Renderer {
             ,0, 6, 0, 3
             ,8, 7, 5, dng
           ][ng];
-        if (room.state.type == Light) rp += 13;
+        if (room.state.type == Light || room.state.type == CharSheet) rp += 13;
         rb.blitAlpha(roomPieces[rp], x * ROOM_SIZE, y * ROOM_SIZE);
         vi++;
       }
@@ -224,6 +236,9 @@ class Renderer {
     }
     var rx = room.x.floor() - camX.floor();
     var ry = room.y.floor() - room.z.floor() - camY.floor();
+    if (room.state.type == CharSheet) {
+      ry += 400 - (state.charTween.valueF * 400).floor();
+    }
     if (rx < Main.W && ry < Main.H
         && rx >= -ROOM_SIZE * room.state.width && ry >= -ROOM_SIZE * room.state.height) {
       ab.blitAlpha(cacheBg[room.state.id], rx, ry);

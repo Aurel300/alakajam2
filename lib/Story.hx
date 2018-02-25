@@ -173,6 +173,7 @@ class Story {
     while (ci < rep.length) {
       function takeParens():String {
         var ret = new StringBuf();
+        ci++;
         while (ci < rep.length) {
           switch (rep.charAt(ci)) {
             case "(":

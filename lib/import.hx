@@ -1,6 +1,7 @@
 package lib;
 
 import haxe.ds.Vector;
+import sk.thenet.anim.Bitween;
 import sk.thenet.app.*;
 import sk.thenet.app.Keyboard.Key;
 import sk.thenet.app.asset.Bind as AssetBind;

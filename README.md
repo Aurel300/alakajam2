@@ -88,18 +88,16 @@ ROGUELIKE
      - [x] newspaper clippings with text
      - [x] text justify
      - [x] mark words - words become enemies
-     - [ ] censors
+     - [.] censors
    - [ ] controls
      - [x] moving around
-     - [ ] shooting?
      - [x] vision cone
      - [x] left click to see
-     - [ ] right click to shoot
-       - [ ] bresenham shooting
+     - [ ] attacking
    - [ ] RPG / rogue elements
      - [x] tutorial / options / menu
      - [ ] floor progression
-     - [ ] character sheet
+     - **[ ] character sheet**
      - [ ] items
      - [ ] stats
      - [ ] experience

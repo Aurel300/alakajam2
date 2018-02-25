@@ -76,7 +76,7 @@ class Scenario {
         JustifyFont("Some things remain hidden until you left click. But, your " + Text.c(8) + " " + Text.c(18) + " !", 9, 9, 15 * 16 - 18, Regular3)
       );
     options.state.visuals.push(
-        Text(Text.t(Mono1) + "NEW GAME\n\n" + [ for (y in 0...7) Text.t(Symbol) + "    B" ].join("\n\n\n\n"), 20, 20)
+        Text(Text.t(Mono1) + "NEW GAME\n\n" + [ for (y in 0...8) Text.t(Symbol) + "    B" ].join("\n\n\n\n"), 20, 20)
       );
     options.state.wallRect([
          1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
@@ -134,6 +134,29 @@ class Scenario {
     title.state.entities.push(new Player(18, 3));
     options.state.walls[options.state.indexTile(6, 51)] = WallType.Trigger((_) -> {});
     ret.floors = [layout];
+    return ret;
+  }
+  
+  public static function charSheet():RoomLayout {
+    var ret:RoomLayout = {
+         state: new RoomState(CharSheet, 15, 19)
+        ,x: 0
+        ,y: 0
+        ,z: 0
+        ,tx: 0
+        ,ty: 0
+        ,tz: 0
+      };
+    ret.state.visuals.push(
+        Text("Character factbook", 64, 116)
+      );
+    ret.state.visuals.push(
+        Text(Text.t(Small3) + "< Press C to\n  continue", 144, 136)
+      );
+    ret.state.visuals.push(
+        Text("Inventory", 92, 172)
+      );
+    ret.state.visited = true;
     return ret;
   }
   

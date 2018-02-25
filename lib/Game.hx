@@ -30,4 +30,11 @@ class Game extends JamState {
     ren.mouseMove(state, mx, my);
     state.vision();
   }
+  
+  override public function keyUp(key:Key) {
+    switch (key) {
+      case KeyC: state.charTween.toggle();
+      case _:
+    }
+  }
 }

@@ -4,4 +4,5 @@ enum RoomType {
   Normal;
   Clipping;
   Light;
+  CharSheet;
 }
