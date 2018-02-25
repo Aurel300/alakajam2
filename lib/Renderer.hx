@@ -10,6 +10,7 @@ class Renderer {
   public static var desk:Array<Bitmap>;
   public static var fold:Bitmap;
   public static var tape:Bitmap;
+  public static var cursors:Array<Bitmap>;
   
   public static function init(am:AssetManager):Void {
     var s = am.getBitmap("paper").fluent;
@@ -27,12 +28,14 @@ class Renderer {
       ];
     fold = s >> new Cut(0, 104, 80, 16);
     tape = s >> new Cut(80, 40, 32, 32);
+    cursors = [ for (x in 0...2) s >> new Cut(x * 16, 120, 16, 16) ];
   }
   
   var cacheDesk:Bitmap;
   var cacheBg = new Map<Int, Bitmap>();
   var cacheText = new Map<Int, {txt:Array<String>, txtres:Array<Bitmap>, res:Bitmap}>();
   var cacheTape = new Map<Int, Bitmap>();
+  var messages:Array<{res:Bitmap, y:Float, ty:Float, age:Int}> = [];
   
   var camX:Float = 0;
   var camY:Float = 0;
@@ -52,6 +55,18 @@ class Renderer {
     }
     cacheDesk = Platform.createBitmap(2 * cd.width, 2 * cd.height, 0);
     for (y in 0...2) for (x in 0...2) cacheDesk.blit(cd, x * cd.width, y * cd.height);
+  }
+  
+  public function log(msg:String):Void {
+    for (m in messages) m.ty -= 12;
+    var res = Platform.createBitmap(300, 12, 0);
+    Text.render(res, 2, 2, Text.t(Small) + msg);
+    messages.push({
+         res: res
+        ,y: 0
+        ,ty: -14
+        ,age: 0
+      });
   }
   
   public function mouseMove(state:GameState, mx:Int, my:Int):Void {
@@ -104,6 +119,14 @@ class Renderer {
     }
     if (!state.charTween.isOff)
       renderRoom(state.layout.rooms[state.layout.rooms.length - 1], state, ab);
+    messages = [ for (m in messages) {
+        ab.blitAlpha(m.res, 0, Main.H + m.y.floor());
+        m.y.target(m.ty, 9);
+        m.age++;
+        if (m.age > 180 + m.y) continue;
+        m;
+      } ];
+    ab.blitAlpha(cursors[state.charTween.isOn ? 0 : 1], Main.g.app.mouse.x, Main.g.app.mouse.y);
   }
   
   function renderTape(tape:Tape, from:RoomLayout, ab:Bitmap):Void {
@@ -254,10 +277,6 @@ class Renderer {
         var player = Main.g.state.player;
         Text.render(ab, rx + player.x * 8, ry + player.y * 8 - 4, "@", Mono1);
       }
-    }
-    if (room.state == state.mouseRoom) {
-      trace("?");
-      ab.set(rx + state.mouseX, ry + state.mouseY, Colour.BLUE);
     }
   }
 }

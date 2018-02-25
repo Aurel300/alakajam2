@@ -56,13 +56,11 @@ ROGUELIKE
 
  - graphics
    - [x] desk
-   - [ ] paper routines
+   - [x] paper routines
      - [x] paper of arbitrary size
      - [x] cut outs
      - [x] conspiracy photos
-     - [ ] header fonts
      - [x] folds
-     - [ ] scratch-off surfaces
      - [x] font aligned on paper
      - [x] text entities
        - [x] player
@@ -81,8 +79,8 @@ ROGUELIKE
      - [x] connect with tapes
      - [x] interior
    - [ ] story generation
-     - [ ] more events, places, agents
-     - [ ] times
+     - [x] more events, places, agents
+     - [x] times
      - [x] suspicious story
      - [x] newspaper clippings with text
      - [x] text justify
@@ -96,14 +94,16 @@ ROGUELIKE
    - [ ] RPG / rogue elements
      - [x] tutorial / options / menu
      - [x] floor progression
-     - [ ] turns
      - [x] character sheet
      - [x] items
-     - [ ] event log
+     - [x] event log
      - [x] gameover
      - [x] stats
-     - [ ] experience
+     - [x] difficulty scaling
+     - [x] experience
      - [ ] shop?
+     - [ ] working options screen
+     - [x] cursor + click anywhere to do vision
  - [ ] audio
    - [x] some sfx
    - [ ] music ...

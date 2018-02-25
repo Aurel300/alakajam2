@@ -1,12 +1,12 @@
 package lib;
 
 class RPG {
-  public static inline var INITIAL_HEALTH = 1; //20;
+  public static inline var INITIAL_HEALTH = 20;
   public static inline var INITIAL_STRENGTH = 5;
   
   public var maxHealth = INITIAL_HEALTH;
   public var strength = INITIAL_STRENGTH;
-  public var speed = 1; // DEBUG 3;
+  public var speed = 3;
   public var inventory:Array<Item> = [];
   public var equipped:Array<Item> = [];
   public var gold:Int = 0;
@@ -106,9 +106,7 @@ class RPG {
     return null;
   }
   
-  public function new() {
-    inventory = [ for (i in 0...3) Procgen.createItem() ];
-  }
+  public function new() {}
   
   public function tick() {
     if (toxic > 0) {

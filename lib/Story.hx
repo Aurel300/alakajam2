@@ -26,6 +26,13 @@ class Story {
           ,{text: "TV", plural: false, formal: 0}
         ], factions: ["official"]
     }, {
+      id: "army", display: [
+           {text: "Army", plural: false, formal: 1}
+          ,{text: "Military", plural: false, formal: 1}
+          ,{text: "Green Army Men", plural: true, formal: -1}
+          ,{text: "GI Joes", plural: true, formal: -1}
+        ], factions: ["official"]
+    }, {
       id: "citizen", display: [
            {text: "citizen", plural: false, formal: 1}
           ,{text: "inhabitant", plural: false, formal: 0}
@@ -64,6 +71,13 @@ class Story {
       ,after: ["ufo-remote-contact", "ufo-abduction"]
       ,before: ["ufo-crash"]
     }, {
+       id: "ufo-plane"
+      ,display: "%army% claim~(army/s/) strange lights are just top secret prototype planes"
+      ,agents: ["army" => "army"]
+      ,photo: "plane"
+      ,after: ["ufo-sighting"]
+      ,before: ["plane-attack"]
+    }, {
        id: "ufo-crash"
       ,display: "a UFO crashed?( at %site%)"
       ,photo: "ufo"
@@ -83,6 +97,36 @@ class Story {
       ,agents: ["agent" => "people", "alien" => "alien"]
       ,places: ["site" => "autopsy"]
       ,after: ["ufo-close-contact"]
+    }, {
+       id: "sub-seen"
+      ,display: "%army% ~(army/is/are) using the sea to hide ~(army/its/their) submarines"
+      ,photo: "sub"
+      ,agents: ["army" => "army"]
+      ,before: ["sub-toxic"]
+    }, {
+       id: "sub-toxic"
+      ,display: "toxic waste left by submarines"
+      ,photo: "toxic"
+      ,after: ["sub-seen"]
+    }, {
+       id: "bunker"
+      ,display: "%people% ~(people/is/are) hiding in a bunker?( at %site%)"
+      ,photo: "bunker"
+      ,agents: ["army" => "army"]
+      ,places: ["site" => "crashsite"]
+      ,after: ["sub-seen"]
+    }, {
+       id: "plane-attack"
+      ,display: "autonomous plane abducted by aliens, ~(people/says/say) %people%"
+      ,photo: "plane"
+      ,agents: ["people" => "media"]
+      ,after: ["ufo-places"]
+      ,before: ["ufo-abduction", "plane-rig"]
+    }, {
+       id: "plane-rig"
+      ,display: "oil mining rig is actually a top secret military plane prototype"
+      ,photo: "rig"
+      ,after: ["plane-attack"]
     }];
   
   public static var ALL_PLACES:Array<Place> = [
@@ -114,7 +158,7 @@ class Story {
     var pp = [root];
     if (FM.prng.nextMod(3) == 0 && root.after.length > 0) pp.unshift(FM.prng.nextElement(root.after));
     if (FM.prng.nextMod(3) == 0 && root.before.length > 0) pp.push(FM.prng.nextElement(root.before));
-    return {txt: describe(pp, FM.prng.nextMod(2), Normal), photo: root.event.photo};
+    return {txt: describe(pp, FM.prng.nextMod(2), Chance.ch(30) ? Chance.el([Dubious, Contrast]) : Normal), photo: root.event.photo};
   }
   
   public function describe(
@@ -200,6 +244,16 @@ class Story {
     }
     for (a in pp.places.keys()) {
       rets = rets.replace('%${a}%', pp.places[a].display);
+    }
+    if (Chance.ch(8)) {
+      var t = '19${70 + pp.time}';
+      rets += Chance.el([
+         " at " + t
+        ,", " + t
+        ,", found in documents from " + t
+        ,", are we doomed to relive the events of " + t + "? We can only wait"
+        ,". It's " + t + " all over again "
+        ,", so typical of " + t]);
     }
     rets += (switch (FM.prng.nextMod(4)) {
         case 0: "!";

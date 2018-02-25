@@ -15,7 +15,9 @@ class Chance {
     }
     return a[0];
   }
-  public static function ch(chance:Int):Bool return FM.prng.nextMod(100) < chance;
+  public static function ch(chance:Int):Bool return (FM.prng.nextMod(100):Int) < chance;
   public static function n(min:Int, max:Int):Int return min + FM.prng.nextMod(max + 1 - min);
-  public static function n2(min:Int, max:Int):Int return min + (FM.prng.nextFloat() * FM.prng.nextFloat() * (max + 1 - min)).floor();
+  public static function n2(min:Int, max:Int):Int
+    if (max < min) return 0;
+    else return min + (FM.prng.nextFloat() * FM.prng.nextFloat() * (max + 1 - min)).floor();
 }

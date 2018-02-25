@@ -51,7 +51,6 @@ class Paper extends JamState {
       var src = amB(photo);
       var srcv = src.getVector();
       var res = Platform.createBitmap(src.width, src.height, 0);
-      trace(src.width, src.height);
       var vi = 0;
       for (y in 0...src.height) for (x in 0...src.width) {
         var hsl = srcv[vi].toHSL();

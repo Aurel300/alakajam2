@@ -6,7 +6,7 @@ class Entity {
   public var y:Int;
   public var type:EntityType;
   public var povType:PovType;
-  public var pov:Int = 0;
+  public var pov:Int = -1;
   public var health:Int = 0;
   public var stun:Int = 0;
   public var poison:Int = 0;
@@ -21,7 +21,10 @@ class Entity {
       if (stun > 0) stun--;
       if (poison > 0) {
         if (FM.prng.nextMod(30) < poison) {
-          if (type == Player) SFX.p("poison");
+          if (type == Player) {
+            Main.g.ren.log("You feel the poison running through your veins.");
+            SFX.p("poison");
+          }
           health = (health - FM.prng.nextMod(poison - 1) - 1).maxI(1);
           poison--;
         }
@@ -115,7 +118,9 @@ class Entity {
     }
     switch (room.walls[room.indexTile(nx, ny)]) {
       case None | Tunnel:
-      case Trigger(action): action(this);
+      case Trigger(action):
+      Main.g.ren.log("You hear a pressure plate!");
+      action(this);
       case _: return false;
     }
     x = nx;

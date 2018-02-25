@@ -311,7 +311,8 @@ class Procgen {
         {at: nxt.pos, r: r, from: FM.prng.nextElement([ for (k in nxt.from.keys()) if (nxt.from[k]) k ])};
       } ];
     order.unshift({at: initial, r: 0, from: -1});
-    var storyIndices = [ for (i in 0...roomCount) i ];
+    var final = roomCount - 1;
+    var storyIndices = [ for (i in 0...roomCount - 1) i ];
     while (storyIndices.length > storyRooms) {
       storyIndices.splice(FM.prng.nextMod(storyIndices.length), 1);
     }
@@ -324,8 +325,11 @@ class Procgen {
     var states = [ for (n in order) {
         var nx = n.at % w;
         var ny = (n.at / w).floor();
-        var rstate = createRoom(storyIndices.indexOf(n.r) != -1 ? Clipping : (Chance.el([RoomType.Normal, RoomType.Light])), story);
-        if (rstate.type != Clipping) rstate.title = '${n.r + 1}';
+        var rtype = Chance.el([RoomType.Normal, RoomType.Light]);
+        if (storyIndices.indexOf(n.r) != -1) rtype = Clipping;
+        if (n.r == final) rtype = Exit;
+        var rstate = createRoom(rtype, story);
+        if (rstate.type != Clipping && rstate.title == null) rstate.title = '${n.r + 1}';
         gridStates[n.at] = rstate;
         maxW[nx] = maxW[nx].maxI(rstate.width);
         maxH[ny] = maxH[ny].maxI(rstate.height);
@@ -401,7 +405,7 @@ class Procgen {
       ,{w: 7, h: 7, l: [
            1, 1, 1, 1, 0, 0, 0
           ,1, 0, 0, 0, 0, 0, 0
-          ,1, 0, 1, 1, 0, 0, 0
+          ,1, 0, 1, 1, 1, 0, 0
           ,1, 0, 1, 1, 1, 0, 1
           ,0, 0, 0, 1, 0, 0, 0
           ,0, 0, 0, 1, 0, 0, 0
@@ -529,6 +533,22 @@ class Procgen {
             case 1: WallType.Solid;
             case _: WallType.None;
           }), 2, 2, w, h);
+        var treasureCount = Chance.ch(8) ? Chance.n(1, 3) : 0;
+        var enemyCount = Chance.ch(30) ? Chance.n2(3, 10) : 0;
+        var empty = [ for (y in 0...posh) for (x in 0...posw) if (posstate[x + y * posw] != 1) {x: x, y: y} ];
+        while (enemyCount > 0 && empty.length > 0) {
+          var p = Chance.el(empty);
+          empty.remove(p);
+          ret.add(new Enemy("x", p.x + 2, p.y + 2));
+          enemyCount--;
+        }
+        while (treasureCount > 0 && empty.length > 0) {
+          var p = Chance.el(empty);
+          empty.remove(p);
+          if (Chance.ch(30)) ret.add(new ItemDrop(createItem(), p.x + 2, p.y + 2));
+          else ret.add(new GoldDrop(Chance.n2(10, 120), p.x + 2, p.y + 2));
+          treasureCount--;
+        }
         return ret;
         case Clipping:
         var w = 8 + FM.prng.nextMod(12);
@@ -557,15 +577,27 @@ class Procgen {
           cy += photoH;
         }
         for (m in justified.marks) for (i in 0...m.txt.length) {
-          ret.entities.push(new Enemy(
+          var leten = new Enemy(
                m.txt.charAt(i)
               ,i + ((8 + m.pt.x) >> 3) + 1
               ,(((cy / 8).floor() * 8 + 4 + m.pt.y) >> 3) + 1
-            ));
+            );
+          leten.pov = 0;
+          leten.alarmed = false;
+          ret.entities.push(leten);
         }
         ret.fix();
         ret.visuals.push(Bitmap(justified.res, 8, (cy / 8).floor() * 8 + 4));
         ret;
+        case Exit:
+        var ret = new RoomState(type, 5, 5);
+        ret.title = "Exit";
+        ret.walls[ret.indexTile(5, 5)] = ret.walls[ret.indexTile(4, 5)]
+          = WallType.Trigger((player) -> { Main.g.state.nextLevel(); });
+        ret.visuals.push(
+            Text(Text.t(Mono1) + "[" + Text.t(Mono5) + "@@" + Text.t(Mono1) + "]", 23, 36)
+          );
+        return ret;
       });
   }
 }

@@ -5,4 +5,5 @@ enum RoomType {
   Clipping;
   Light;
   CharSheet;
+  Exit;
 }

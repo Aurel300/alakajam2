@@ -65,7 +65,6 @@ class Scenario {
     title.state.visuals.push(
         Text(Text.t(Mono1) + "[" + Text.t(Mono5) + "@" + Text.t(Mono1) + "]", 263, 84)
       );
-    // DEBUG
     if (!first) {
       options.state.portWide(title.state, 4, 18, 1, title.state.h2 - 2, false);
       options.state.visited = true;

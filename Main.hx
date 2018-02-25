@@ -50,6 +50,7 @@ class Main extends Application {
             ,Embed.getSound("player-step", "wav/player-step.wav")
             ,Embed.getSound("poison", "wav/poison.wav")
             ,Embed.getSound("unequip", "wav/unequip.wav")
+            ,Embed.getSound("victory", "wav/victory.wav")
             ,Embed.getSound("vision", "wav/vision.wav")
             ,new AssetBind([
                  "paper", font.FontFancy8x13.ASSET_ID, font.FontNS.ASSET_ID
@@ -64,6 +65,7 @@ class Main extends Application {
                 Pal.init(am);
                 Text.init(am);
                 Renderer.init(am);
+                SFX.music();
                 false;
               })
           ])

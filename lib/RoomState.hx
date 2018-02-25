@@ -71,7 +71,15 @@ class RoomState {
     var player = Main.g.state.player;
     var invWeight = 0;
     for (i in rpg.inventory) invWeight += i.weight;
+    var wasov = rpg.overburdened;
     rpg.overburdened = invWeight > rpg.capacity;
+    if (wasov != rpg.overburdened) {
+      if (rpg.overburdened) {
+        Main.g.ren.log("You are overburdened!");
+      } else {
+        Main.g.ren.log("You are no longer overburdened.");
+      }
+    }
     rpg.changed = false;
     visuals = [];
     visuals.push(lib.Text.centred("Character factbook", 120, 20));
@@ -80,7 +88,7 @@ class RoomState {
          {title: "Health/Max", value: '${player.health}/${rpg.maxHealth}'}
         ,{title: "Gold", value: "" + rpg.gold}
         ,{title: "Strength/Capacity", value: '${rpg.strength}/${rpg.capacity}lb'}
-        ,{title: "Speed/Atk rate", value: '${rpg.speed}/${rpg.rate}'}
+        ,{title: "Attack/Attack rate", value: '${rpg.attack}/${rpg.rate}'}
         ,{title: "Defense", value: '${rpg.defense}'}
         ,{title: [
              {val: rpg.overburdened, text: "Overburdened"}
@@ -93,6 +101,7 @@ class RoomState {
       visuals.push(Text(c.value, 160, cy));
       cy += 16;
     }
+    visuals.push(Text(Text.t(Small3) + "Navigate the\ninventory using\nWASD", 16, 136));
     visuals.push(Text(Text.t(Small3) + "< Press C to\n  continue", 144, 136));
     visuals.push(lib.Text.centred('Inventory (${invWeight}lb)', 120, 172));
     visuals.push(Fold(16, 188, 208));
@@ -248,9 +257,14 @@ class RoomState {
       for (pt in new Bresenham(from, ray)) {
         var mi = indexTile(pt.x, pt.y);
         pov[mi] += (power * POV_STRENGTH).floor();
+        pov[mi] = pov[mi].minI(POV_STRENGTH);
         switch (walls[mi]) {
           case Solid: power -= 1;
           case _:
+          if (pt.x > 0 && walls[mi - 1] == Solid) pov[mi - 1] = pov[mi - 1].maxI(pov[mi]);
+          if (pt.x < w2 - 2 && walls[mi + 1] == Solid) pov[mi + 1] = pov[mi + 1].maxI(pov[mi]);
+          if (pt.y > 0 && walls[mi - w2] == Solid) pov[mi - w2] = pov[mi - w2].maxI(pov[mi]);
+          if (pt.y < h2 - 2 && walls[mi + w2] == Solid) pov[mi + w2] = pov[mi + w2].maxI(pov[mi]);
         }
         if (power < 0.001) break;
       }

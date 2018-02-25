@@ -30,7 +30,7 @@ class Item {
   
   public function doAction():Void {
     if (isFood) consume();
-    if (equipped) unequip();
+    else if (equipped) unequip();
     else equip();
     Main.g.state.rpg.changed = true;
   }
@@ -38,6 +38,7 @@ class Item {
   public function consume():Void {
     switch (type) {
       case Food(heal, toxic, poison):
+      Main.g.ren.log('You consume ${this.name}.');
       Main.g.state.player.hurt(null, -heal, 0, poison);
       Main.g.state.rpg.inventory.remove(this);
       Main.g.state.rpg.changed = true;
@@ -47,6 +48,7 @@ class Item {
   
   public function drop():Void {
     unequip();
+    Main.g.ren.log('You drop ${this.name}.');
     Main.g.state.charPaused.add(new ItemDrop(this, Main.g.state.charPausedX, Main.g.state.charPausedY));
     Main.g.state.rpg.inventory.remove(this);
     Main.g.state.rpg.changed = true;
@@ -55,6 +57,7 @@ class Item {
   public function unequip():Void {
     if (Main.g.state.rpg.equipped.remove(this)) {
       Main.g.state.rpg.changed = true;
+      Main.g.ren.log('You unequip ${this.name}.');
       SFX.p("unequip");
     }
   }
@@ -63,6 +66,7 @@ class Item {
     var prev = Main.g.state.rpg.equippedType(type);
     if (prev != null) prev.unequip();
     Main.g.state.rpg.equipped.push(this);
+    Main.g.ren.log('You equip ${this.name}.');
     SFX.p("equip");
   }
   
