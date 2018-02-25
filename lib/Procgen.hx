@@ -319,8 +319,8 @@ class Procgen {
     var states = [ for (n in order) {
         var nx = n.at % w;
         var ny = (n.at / w).floor();
-        var rstate = createRoom(storyIndices.indexOf(n.r) != -1 ? Clipping : Normal, story);
-        rstate.title = '${n.r + 1}';
+        var rstate = createRoom(storyIndices.indexOf(n.r) != -1 ? Clipping : (Chance.el([RoomType.Normal, RoomType.Light])), story);
+        if (rstate.type != Clipping) rstate.title = '${n.r + 1}';
         gridStates[n.at] = rstate;
         maxW[nx] = maxW[nx].maxI(rstate.width);
         maxH[ny] = maxH[ny].maxI(rstate.height);
@@ -383,10 +383,148 @@ class Procgen {
     return ret;
   }
   
+  static var INTERS = [
+      {w: 7, h: 7, l: [
+           1, 1, 1, 1, 0, 0, 0
+          ,1, 1, 1, 1, 0, 0, 0
+          ,1, 1, 1, 1, 0, 0, 0
+          ,1, 1, 1, 1, 1, 0, 1
+          ,0, 0, 0, 1, 0, 0, 0
+          ,0, 0, 0, 0, 0, 0, 0
+          ,0, 0, 0, 1, 0, 0, 0
+        ]}
+      ,{w: 7, h: 7, l: [
+           1, 1, 1, 1, 0, 0, 0
+          ,1, 0, 0, 0, 0, 0, 0
+          ,1, 0, 1, 1, 0, 0, 0
+          ,1, 0, 1, 1, 1, 0, 1
+          ,0, 0, 0, 1, 0, 0, 0
+          ,0, 0, 0, 1, 0, 0, 0
+          ,0, 0, 0, 1, 0, 0, 0
+        ]}
+      ,{w: 7, h: 7, l: [
+           1, 1, 1, 1, 0, 0, 0
+          ,1, 0, 0, 0, 0, 0, 0
+          ,1, 0, 1, 1, 0, 0, 0
+          ,1, 0, 1, 1, 1, 0, 1
+          ,0, 0, 0, 1, 1, 0, 1
+          ,0, 0, 0, 0, 0, 0, 1
+          ,0, 0, 0, 1, 1, 1, 1
+        ]}
+      ,{w: 7, h: 7, l: [
+           0, 0, 0, 1, 1, 1, 1
+          ,0, 0, 0, 0, 0, 0, 1
+          ,0, 0, 0, 1, 1, 0, 1
+          ,1, 0, 1, 1, 1, 0, 1
+          ,1, 0, 1, 1, 0, 0, 0
+          ,1, 0, 0, 0, 0, 0, 0
+          ,1, 1, 1, 1, 0, 0, 0
+        ]}
+      ,{w: 7, h: 7, l: [
+           0, 0, 0, 0, 0, 0, 0
+          ,0, 1, 1, 1, 1, 1, 0
+          ,0, 1, 0, 0, 0, 1, 0
+          ,0, 1, 0, 0, 0, 1, 0
+          ,0, 1, 0, 0, 0, 1, 0
+          ,0, 1, 1, 0, 1, 1, 0
+          ,0, 0, 0, 0, 0, 0, 0
+        ]}
+      ,{w: 7, h: 7, l: [
+           0, 0, 0, 0, 0, 0, 0
+          ,0, 1, 1, 0, 1, 1, 0
+          ,0, 1, 0, 0, 0, 1, 0
+          ,0, 1, 1, 1, 1, 1, 0
+          ,0, 1, 0, 0, 0, 1, 0
+          ,0, 1, 1, 0, 1, 1, 0
+          ,0, 0, 0, 0, 0, 0, 0
+        ]}
+      ,{w: 7, h: 7, l: [
+           0, 1, 0, 0, 0, 0, 0
+          ,0, 1, 0, 0, 0, 0, 0
+          ,0, 1, 0, 0, 0, 0, 0
+          ,0, 1, 1, 0, 1, 1, 0
+          ,0, 0, 0, 0, 0, 1, 0
+          ,0, 0, 0, 0, 0, 1, 0
+          ,0, 0, 0, 0, 0, 1, 0
+        ]}
+      ,{w: 7, h: 7, l: [
+           0, 0, 0, 0, 0, 1, 0
+          ,0, 0, 0, 0, 0, 1, 0
+          ,0, 0, 0, 0, 0, 1, 0
+          ,0, 1, 1, 0, 1, 1, 0
+          ,0, 1, 0, 0, 0, 0, 0
+          ,0, 1, 0, 0, 0, 0, 0
+          ,0, 1, 0, 0, 0, 0, 0
+        ]}
+      ,{w: 7, h: 7, l: [
+           1, 1, 1, 1, 1, 0, 1
+          ,1, 0, 0, 0, 0, 0, 1
+          ,1, 0, 1, 1, 1, 0, 1
+          ,1, 0, 1, 0, 1, 0, 1
+          ,0, 0, 1, 0, 1, 0, 1
+          ,1, 0, 0, 0, 1, 0, 1
+          ,1, 1, 1, 1, 1, 0, 1
+        ]}
+      ,{w: 7, h: 7, l: [
+           0, 0, 0, 0, 0, 0, 0
+          ,0, 0, 0, 0, 0, 0, 0
+          ,0, 0, 0, 0, 0, 0, 0
+          ,0, 0, 0, 0, 0, 0, 0
+          ,0, 0, 0, 0, 0, 0, 0
+          ,0, 0, 0, 0, 0, 0, 0
+          ,0, 0, 0, 0, 0, 0, 0
+        ]}
+      ,{w: 3, h: 3, l: [
+           0, 0, 0
+          ,0, 0, 0
+          ,0, 0, 0
+        ]}
+      ,{w: 3, h: 3, l: [
+           1, 1, 0
+          ,0, 0, 0
+          ,0, 1, 1
+        ]}
+      ,{w: 3, h: 3, l: [
+           0, 1, 0
+          ,0, 1, 0
+          ,0, 0, 0
+        ]}
+    ];
+  
   public static function createRoom(type:RoomType, story:Story):RoomState {
     return (switch (type) {
         case Normal | Light | CharSheet:
-        new RoomState(type, 4 + FM.prng.nextMod(4), 4);
+        var w = Chance.n(4, 8) + Chance.n2(2, 10);
+        var h = Chance.n(4, 8) + Chance.n2(2, 10);
+        var ret = new RoomState(type, w, h);
+        w *= 2;
+        h *= 2;
+        w -= 4;
+        h -= 4;
+        var posint = Chance.el(INTERS.filter(i -> i.w <= w && i.h <= h));
+        var posw = posint.w;
+        var posh = posint.h;
+        var posstate = posint.l.copy();
+        while (posw < w || posh < h) {
+          switch (Chance.el([].concat(posw < w ? [0] : []).concat(posh < h ? [1] : []))) {
+            case 0: // w
+            var x = Chance.n(0, posw - 1);
+            for (i in 0...posh) {
+              var ri = posh - 1 - i;
+              posstate.insert(x + ri * posw, posstate[x + ri * posw]);
+            }
+            posw++;
+            case _: // h
+            var y = Chance.n(0, posh - 1);
+            posstate = posstate.slice(0, y * posw).concat(posstate.slice(y * posw, (y + 1) * posw)).concat(posstate.slice(y * posw));
+            posh++;
+          }
+        }
+        ret.wallRect(posstate.map(n -> switch (n) {
+            case 1: WallType.Solid;
+            case _: WallType.None;
+          }), 2, 2, w, h);
+        return ret;
         case Clipping:
         var w = 8 + FM.prng.nextMod(12);
         var aw = w * Renderer.ROOM_SIZE - 18;
@@ -400,7 +538,8 @@ class Procgen {
         excerpt.txt = [ for (w in excerpt.txt.split(" "))
             if (w.split("").filter(
                 l -> l.charCodeAt(0) < "a".code || l.charCodeAt(0) > "z".code
-              ).length == 0 && FM.prng.nextMod(10) == 0) "$B" + w
+              ).length == 0 && Chance.ch(10)) "$B" + w
+            else if (Chance.ch(w.length * 3)) Text.c((w.length * .6).floor())
             else w
           ].join(" ");
         var justified = Text.justify(excerpt.txt, aw);

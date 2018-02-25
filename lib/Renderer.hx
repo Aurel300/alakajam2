@@ -59,6 +59,8 @@ class Renderer {
     var len = state.layout.rooms.length;
     for (ri in 0...len) {
       var room = state.layout.rooms[len - ri - 1];
+      if (!room.state.visited) continue;
+      if (room.state.type == CharSheet && !state.charTween.isOn) continue;
       var rx = room.x.floor() - camX.floor();
       var ry = room.y.floor() - room.z.floor() - camY.floor();
       if (mx.withinI(rx, rx + room.state.width * ROOM_SIZE - 1)
@@ -244,7 +246,7 @@ class Renderer {
     if (room.state.type == CharSheet) {
       ry += 400 - (state.charTween.valueF * 400).floor();
     }
-    if (rx < Main.W && ry < Main.H
+    if (room.state.visited && rx < Main.W && ry < Main.H
         && rx >= -ROOM_SIZE * room.state.width && ry >= -ROOM_SIZE * room.state.height) {
       ab.blitAlpha(cacheBg[room.state.id], rx, ry);
       if (room.state.type != CharSheet) ab.blitAlpha(cacheText[room.state.id].res, rx, ry);
@@ -254,6 +256,7 @@ class Renderer {
       }
     }
     if (room.state == state.mouseRoom) {
+      trace("?");
       ab.set(rx + state.mouseX, ry + state.mouseY, Colour.BLUE);
     }
   }

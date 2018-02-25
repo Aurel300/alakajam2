@@ -171,10 +171,30 @@ class RoomState {
     return x + y * w2;
   }
   
+  function clearWay(x:Int, y:Int, dx:Int, dy:Int, ?centre:Bool = false):Void {
+    var cx = x + dx;
+    var cy = y + dy;
+    while (walls[indexTile(cx, cy)] != WallType.None) {
+      walls[indexTile(cx, cy)] = WallType.Tunnel;
+      cx += dx;
+      cy += dy;
+      if (!cx.withinI(2, w2 - 3) || !cy.withinI(2, h2 - 3)) {
+        if (!centre) {
+          clearWay(x + dx, y + dy, dy, dx, true);
+          clearWay(x + dx, y + dy, -dy, -dx, true);
+        }
+        return;
+      }
+    }
+  }
+  
   public function portWide(s2:RoomState, x:Int, length:Int, y1:Int, y2:Int, s1h:Bool):Void {
+    //if (s1h) return s2.portWide(this, x, length, y2, y1, false);
     for (i in 0...length) {
          portals.push({to: s2,   fx: x + i, fy: y1, tx: x + i, ty: y2 + (s1h ? 1 : -1)});
       s2.portals.push({to: this, fx: x + i, fy: y2, tx: x + i, ty: y1 + (s1h ? -1 : 1)});
+      clearWay(x + i, y1, 0, (s1h ? -1 : 1));
+      s2.clearWay(x + i, y2, 0, (s1h ? 1 : -1));
     }
   }
   
@@ -182,6 +202,8 @@ class RoomState {
     for (i in 0...length) {
          portals.push({to: s2,   fy: y + i, fx: x1, ty: y + i, tx: x2 + (s1l ? 1 : -1)});
       s2.portals.push({to: this, fy: y + i, fx: x2, ty: y + i, tx: x1 + (s1l ? -1 : 1)});
+      clearWay(x1, y + i, (s1l ? -1 : 1), 0);
+      s2.clearWay(x2, y + i, (s1l ? 1 : -1), 0);
     }
   }
   

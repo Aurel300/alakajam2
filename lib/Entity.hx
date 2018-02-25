@@ -21,6 +21,7 @@ class Entity {
       if (stun > 0) stun--;
       if (poison > 0) {
         if (FM.prng.nextMod(30) < poison) {
+          if (type == Player) SFX.p("poison");
           health = (health - FM.prng.nextMod(poison - 1) - 1).maxI(1);
           poison--;
         }
@@ -114,7 +115,7 @@ class Entity {
       }
     }
     switch (room.walls[room.indexTile(nx, ny)]) {
-      case None:
+      case None | Tunnel:
       case Trigger(action): action(this);
       case _: return false;
     }

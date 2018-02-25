@@ -33,7 +33,9 @@ class Game extends JamState {
   
   override public function keyUp(key:Key) {
     switch (key) {
-      case KeyC: state.charTween.toggle();
+      case KeyC:
+      state.charTween.toggle();
+      SFX.p("pause");
       case _:
     }
   }

@@ -15,14 +15,14 @@ class Player extends Entity {
   }
   
   override public function pickUpItem(i:Item):Bool {
-    trace("picked up " + i.name);
+    SFX.p("chest");
     rpg.inventory.push(i);
     rpg.changed = true;
     return true;
   }
   
   override public function pickUpGold(g:Int):Bool {
-    trace("picked up " + g);
+    SFX.p("gold");
     rpg.gold += g;
     rpg.changed = true;
     return true;
@@ -41,9 +41,15 @@ class Player extends Entity {
       if (Chance.ch(thorns)) {
         by.hurt(this, attack, stun, poison);
       }
+      SFX.p("player-hurt");
       attack = (attack - Chance.n(rpg.defense >> 1, rpg.defense)).maxI(0);
+    } else if (attack < 0) {
+      SFX.p("heal");
     }
     var dead = super.hurt(by, attack, stun, poison);
+    if (dead) {
+      SFX.p("player-death");
+    }
     health = health.minI(rpg.maxHealth);
     stun = stun.maxI(0);
     poison = poison.maxI(0);
@@ -51,7 +57,11 @@ class Player extends Entity {
   }
   
   override public function tick(state:GameState):Void {
-    room.visited = true;
+    if (!room.visited) {
+      SFX.p("page");
+      state.framePause = 30;
+      room.visited = true;
+    }
     if (isCharSheet) {
       x += (1).negposI(state.keys.left, state.keys.right);
       y += (1).negposI(state.keys.up, state.keys.down);
@@ -63,7 +73,10 @@ class Player extends Entity {
       if (walkOrtho(
            (1).negposI(state.keys.left, state.keys.right)
           ,(1).negposI(state.keys.up, state.keys.down)
-        )) cdWalk = rpg.walkSpeed;
+        )) {
+        cdWalk = rpg.walkSpeed;
+        if (Chance.ch(20)) SFX.p("player-step");
+      }
     } else cdWalk--;
     if (cdAttack > 0) cdAttack--;
     super.tick(state);

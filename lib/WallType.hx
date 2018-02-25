@@ -5,4 +5,5 @@ enum WallType {
   Solid;
   Invisible;
   Trigger(f:Entity->Void);
+  Tunnel;
 }

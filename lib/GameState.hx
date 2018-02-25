@@ -80,6 +80,9 @@ class GameState {
   public function vision() {
     if (mouseRoom != null && player.room == mouseRoom) {
       mouseRoom.vision(player.x, player.y, mouseX, mouseY);
+      if (mouseRoom.type != CharSheet) {
+        SFX.p("vision");
+      }
     }
   }
 }

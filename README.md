@@ -69,7 +69,6 @@ ROGUELIKE
        - [x] single-letter enemy
        - [ ] ?
      - [x] animate dis/appearance
-       - [ ] shadow
    - [x] piece of tape for corridors
  - gameplay
    - [ ] room generation
@@ -80,7 +79,7 @@ ROGUELIKE
      - [x] compress
      - [ ] shift
      - [x] connect with tapes
-     - [ ] interior
+     - [x] interior
    - [ ] story generation
      - [ ] more events, places, agents
      - [ ] times
@@ -88,7 +87,7 @@ ROGUELIKE
      - [x] newspaper clippings with text
      - [x] text justify
      - [x] mark words - words become enemies
-     - [.] censors
+     - [x] censors
    - [ ] controls
      - [x] moving around
      - [x] vision cone
@@ -104,15 +103,13 @@ ROGUELIKE
      - [ ] gameover
      - [x] stats
      - [ ] experience
- - audio
-   - not my problem :D
+     - [ ] shop?
+ - [ ] audio
+   - [x] some sfx
+   - [ ] music ...
 
 ### Ideas dump ###
 
- - where's the truth @ ? (intro screen)
-   - walk into box to complete wasd tutorial
-   - options
-   - start game
 
 ### Generating story ###
 

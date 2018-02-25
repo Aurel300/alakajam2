@@ -37,7 +37,10 @@ class Enemy extends Entity {
       for (i in holding) room.add(new ItemDrop(i, x, y));
       if (gold > 0) room.add(new GoldDrop(gold, x, y));
       Main.g.state.framePause += 20;
+      SFX.p("player-kill");
       return true;
+    } else {
+      SFX.p("enemy-hurt");
     }
     return false;
   }

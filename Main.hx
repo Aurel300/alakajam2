@@ -36,6 +36,21 @@ class Main extends Application {
             ,Embed.getBitmap("paper-sub", "paper/sub.png")
             ,Embed.getBitmap("paper-toxic", "paper/toxic.png")
             ,Embed.getBitmap("paper-ufo", "paper/ufo.png")
+            ,Embed.getSound("alert", "wav/alert.wav")
+            ,Embed.getSound("chest", "wav/chest.wav")
+            ,Embed.getSound("enemy-hurt", "wav/enemy-hurt.wav")
+            ,Embed.getSound("equip", "wav/equip.wav")
+            ,Embed.getSound("gold", "wav/gold.wav")
+            ,Embed.getSound("heal", "wav/heal.wav")
+            ,Embed.getSound("page", "wav/page.wav")
+            ,Embed.getSound("pause", "wav/pause.wav")
+            ,Embed.getSound("player-death", "wav/player-death.wav")
+            ,Embed.getSound("player-hurt", "wav/player-hurt.wav")
+            ,Embed.getSound("player-kill", "wav/player-kill.wav")
+            ,Embed.getSound("player-step", "wav/player-step.wav")
+            ,Embed.getSound("poison", "wav/poison.wav")
+            ,Embed.getSound("unequip", "wav/unequip.wav")
+            ,Embed.getSound("vision", "wav/vision.wav")
             ,new AssetBind([
                  "paper", font.FontFancy8x13.ASSET_ID, font.FontNS.ASSET_ID
                 ,"paper-alien"

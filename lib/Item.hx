@@ -53,13 +53,17 @@ class Item {
   }
   
   public function unequip():Void {
-    if (Main.g.state.rpg.equipped.remove(this)) Main.g.state.rpg.changed = true;
+    if (Main.g.state.rpg.equipped.remove(this)) {
+      Main.g.state.rpg.changed = true;
+      SFX.p("unequip");
+    }
   }
   
   public function equip():Void {
     var prev = Main.g.state.rpg.equippedType(type);
     if (prev != null) prev.unequip();
     Main.g.state.rpg.equipped.push(this);
+    SFX.p("equip");
   }
   
   public var price(get, never):Int;
