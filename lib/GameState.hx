@@ -20,10 +20,7 @@ class GameState {
     scenario = Procgen.createScenario();
     layout = scenario.floors[0];
     layout.rooms[0].state.entities.push(player = new Player());
-    for (i in 0...5) {
-      layout.rooms[0].state.entities.push(new Enemy());
-    }
-    for (r in layout.rooms) for (e in r.state.entities) e.room = r.state;
+    for (r in layout.rooms) r.state.fix();
   }
   
   public function tick() {

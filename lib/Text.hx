@@ -1,5 +1,7 @@
 package lib;
 
+using StringTools;
+
 class Text {
   public static var fonts:Array<Font>;
   public static inline var REG = FontType.Mono4;
@@ -18,7 +20,7 @@ class Text {
   }
   
   public static inline function tp(pov:Int):String {
-    return t(FontType.Mono5 - ((pov / 20).floor().minI(4)));
+    return t(FontType.Mono5 - ((pov / 20).floor().clampI(0, 4)));
   }
   
   public static inline function t(ft:FontType):String {
@@ -32,15 +34,15 @@ class Text {
   }
   
   public static function justify(txt:String, width:Int):{
-    res:Bitmap, marks:Array<Point2DI>
+    res:Bitmap, marks:Array<{pt:Point2DI, txt:String}>
   } {
     var words = txt.split(" ").map(w -> {
          txt: w
-        ,width: fonts[0].render(tmp, 0, 0, w, fonts).x
+        ,width: fonts[0].render(tmp, 0, 0, w, fonts).x + (w.startsWith("$B") ? 8 : 0)
+        ,mono: w.startsWith("$B")
       });
     var lines = [];
     var lineWidths = [];
-    var marks = [];
     var lineWords = [];
     var lineWidth = 0;
     var minSpace = width * 0.1;
@@ -61,16 +63,22 @@ class Text {
       lines.push(lineWords);
       lineWidths.push(lineWidth);
     }
-    var res = Platform.createBitmap(width, lines.length.maxI(1) * 15, 0);
+    var res = Platform.createBitmap(width, lines.length.maxI(1) * 16, 0);
+    var marks = [];
     var cy = 0;
     for (l in lines) {
       var spacing = ((width - lineWidths.shift()) / (l.length - 1)).minF(maxSpacing);
       var cx = 0.0;
       for (w in l) {
-        fonts[0].render(res, cx.floor(), cy, w.txt, fonts);
+        if (w.mono)
+          marks.push({pt: new Point2DI((cx / 8).floor() * 8, cy), txt: w.txt.substr(2)});
+        else
+          fonts[0].render(
+              res, cx.floor() + 1, cy, w.txt, fonts
+            );
         cx += w.width + spacing;
       }
-      cy += 15;
+      cy += 16;
     }
     return {res: res, marks: marks};
   }

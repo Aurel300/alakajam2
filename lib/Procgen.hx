@@ -212,6 +212,12 @@ class Procgen {
           photoH = 140 + FM.prng.nextMod(60);
           ah += photoH;
         }
+        excerpt.txt = [ for (w in excerpt.txt.split(" "))
+            if (w.split("").filter(
+                l -> l.charCodeAt(0) < "a".code || l.charCodeAt(0) > "z".code
+              ).length == 0 && FM.prng.nextMod(10) == 0) "$B" + w
+            else w
+          ].join(" ");
         var justified = Text.justify(excerpt.txt, aw);
         ah += justified.res.height;
         var h = ((ah + 18) / Renderer.ROOM_SIZE).ceil();
@@ -221,7 +227,15 @@ class Procgen {
           ret.visuals.push(Photo(excerpt.photo, 9, cy, aw, photoH));
           cy += photoH;
         }
-        ret.visuals.push(Bitmap(justified.res, 9, cy));
+        for (m in justified.marks) for (i in 0...m.txt.length) {
+          ret.entities.push(new Enemy(
+               m.txt.charAt(i)
+              ,i + ((8 + m.pt.x) >> 3) + 1
+              ,(((cy / 8).floor() * 8 + 4 + m.pt.y) >> 3) + 1
+            ));
+        }
+        ret.fix();
+        ret.visuals.push(Bitmap(justified.res, 8, (cy / 8).floor() * 8 + 4));
         ret;
       });
   }

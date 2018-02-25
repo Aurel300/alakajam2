@@ -6,6 +6,7 @@ class Entity {
   public var y:Int;
   public var type:EntityType;
   public var povType:PovType;
+  public var pov:Int = 0;
   
   public function new(type:EntityType, povType:PovType) {
     this.type = type;
@@ -13,7 +14,8 @@ class Entity {
   }
   
   public function tick(state:GameState):Void {
-    
+    pov = pov.maxI(room.pov[room.indexTile(x, y)]);
+    if (pov > 0) pov--;
   }
   
   public function print(str:Array<Array<String>>, pov:Int):Void {

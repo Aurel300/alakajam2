@@ -52,6 +52,10 @@ class RoomState {
     }
   }
   
+  public function fix():Void {
+    for (e in entities) e.room = this;
+  }
+  
   public function tick(state:GameState) {
     for (e in entities) e.tick(state);
     for (i in 0...wh4) if (pov[i] > 0) pov[i]--;

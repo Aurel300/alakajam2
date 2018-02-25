@@ -63,7 +63,7 @@ ROGUELIKE
      - [ ] header fonts
      - [ ] folds
      - [ ] scratch-off surfaces
-     - [ ] font aligned on paper
+     - [x] font aligned on paper
      - [x] text entities
        - [x] player
        - [x] single-letter enemy
@@ -80,11 +80,15 @@ ROGUELIKE
      - [x] compress
      - [ ] shift
      - [x] connect with tapes
+     - [ ] interior
    - [ ] story generation
+     - [ ] more events, places, agents
+     - [ ] times
      - [x] suspicious story
      - [x] newspaper clippings with text
      - [x] text justify
-     - [ ] mark words - words become enemies / censored
+     - [x] mark words - words become enemies
+     - [ ] censors
    - [ ] controls
      - [x] moving around
      - [ ] shooting?
@@ -92,8 +96,13 @@ ROGUELIKE
      - [x] left click to see
      - [ ] right click to shoot
        - [ ] bresenham shooting
-   - [ ] RPG elements
+   - [ ] RPG / rogue elements
+     - [ ] tutorial / options / menu
+     - [ ] floor progression
      - [ ] character sheet
+     - [ ] items
+     - [ ] stats
+     - [ ] experience
  - audio
    - not my problem :D
 

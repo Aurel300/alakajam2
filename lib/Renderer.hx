@@ -184,10 +184,10 @@ class Renderer {
         var mi = room.state.indexTile(e.x, e.y);
         if (switch (e.povType) {
             case Always: true;
-            case Fade if (room.state.pov[mi] >= 0): true;
-            case Hide if (room.state.pov[mi] > 0): true;
+            case Fade if (e.pov >= 0): true;
+            case Hide if (e.pov > 0): true;
             case _: false;
-          }) e.print(str, room.state.pov[mi]);
+          }) e.print(str, e.pov);
       }
       var txt = str.map(l -> l.join(""));
       var mod = false;

@@ -169,22 +169,18 @@ class Story {
     var ci = 0;
     var rep = pp.event.display;
     var plurals = new Map<String, Bool>();
-    for (a in pp.agents.keys()) {
-      var ap = FM.prng.nextElement(pp.agents[a].display.filter(
-          d -> d.formal == formal || d.formal == 0
-        ));
-      plurals[a] = ap.plural;
-      rep = rep.replace('%${a}%', ap.text);
-    }
-    for (a in pp.places.keys()) {
-      rep = rep.replace('%${a}%', pp.places[a].display);
-    }
     ret.add(prefix);
     while (ci < rep.length) {
       function takeParens():String {
-        ci += 2;
         var ret = new StringBuf();
-        while (ci < rep.length && rep.charAt(ci) != ")") ret.add(rep.charAt(ci++));
+        while (ci < rep.length) {
+          switch (rep.charAt(ci)) {
+            case "(":
+            case ")": break;
+            case _: ret.add(rep.charAt(ci));
+          }
+          ci++;
+        }
         return ret.toString();
       }
       switch (rep.charAt(ci)) {
@@ -195,12 +191,22 @@ class Story {
       }
       ci++;
     }
-    ret.add(switch (FM.prng.nextMod(4)) {
+    var rets = ret.toString();
+    for (a in pp.agents.keys()) {
+      var ap = FM.prng.nextElement(pp.agents[a].display.filter(
+          d -> d.formal == formal || d.formal == 0
+        ));
+      plurals[a] = ap.plural;
+      rets = rets.replace('%${a}%', ap.text);
+    }
+    for (a in pp.places.keys()) {
+      rets = rets.replace('%${a}%', pp.places[a].display);
+    }
+    rets += (switch (FM.prng.nextMod(4)) {
         case 0: "!";
         case 1: "...";
         case _: ".";
       });
-    var rets = ret.toString();
     rets = rets.charAt(0).toUpperCase() + rets.substr(1);
     return rets;
   }
